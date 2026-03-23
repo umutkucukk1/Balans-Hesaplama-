@@ -369,7 +369,7 @@ footer p { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); le
   </div>
 </div>
 
-<button class="calc-btn" id="calcBtn" onclick="calculate()" style="background:#ff5533!important;background-color:#ff5533!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border:none!important;-webkit-appearance:none!important;">⟶ HESAPLA</button>
+<button class="calc-btn" id="calcBtn" style="background:#ff5533!important;background-color:#ff5533!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border:none!important;-webkit-appearance:none!important;">⟶ HESAPLA</button>
 
 <!-- RESULTS -->
 
@@ -619,8 +619,19 @@ document.getElementById(‘resultSection’).style.display = ‘none’;
 window.scrollTo({top:0, behavior:‘smooth’});
 }
 
-// Buton bağla — onclick ile de çalışsın diye HTML’de de bırakıyoruz
-document.getElementById(‘calcBtn’).onclick = calculate;
+// Butonu bağla - Safari için birden fazla yöntem
+var btn = document.getElementById(‘calcBtn’);
+if (btn) {
+btn.onclick = function() { calculate(); return false; };
+btn.addEventListener(‘touchend’, function(e) {
+e.preventDefault();
+calculate();
+});
+btn.addEventListener(‘click’, function(e) {
+e.preventDefault();
+calculate();
+});
+}
 </script>
 
 </body>
