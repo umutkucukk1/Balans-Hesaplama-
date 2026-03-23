@@ -1,637 +1,700 @@
 <!DOCTYPE html>
 
-<html lang="tr" style="background:#0d0d0d; color-scheme:dark;">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
-<title>Fan Balans Hesap Aracı</title>
-<link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600;700;800&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Fan Balans</title>
 <style>
-:root {
-  color-scheme: dark;
-  --bg: #0d0d0d;
-  --bg2: #1a1a1a;
-  --surface: #141414;
-  --border: #2a2a2a;
-  --border2: #333333;
-  --ink: #f0ede8;
-  --ink2: #a0a0a0;
-  --ink3: #666666;
-  --accent: #ff5533;
-  --accent2: #4488ff;
-  --ok: #00cc66;
-  --warn: #ffaa00;
-  --plane1: #ff5533;
-  --plane2: #4488ff;
-  --mono: 'DM Mono', monospace;
-  --display: 'Oxanium', sans-serif;
-  --body: 'DM Sans', sans-serif;
-}
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--body);
-  min-height: 100vh;
-  padding: 2rem 1rem 4rem;
-}
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='1' height='1' fill='%23fff' opacity='0.015'/%3E%3C/svg%3E");
-  pointer-events: none; z-index: 0;
-}
-.wrap { position: relative; z-index: 1; max-width: 860px; margin: 0 auto; }
 
-.h-title {
-font-family: var(–display); font-size: clamp(2.2rem, 7vw, 3.4rem);
-font-weight: 800; letter-spacing: -0.01em; line-height: 1.1; color: var(–ink);
-}
-.h-title em { color: var(–accent); font-style: normal; }
-.h-sub { font-family: var(–mono); font-size: 0.95rem; color: var(–ink3); letter-spacing: 0.08em; margin-top: 0.6rem; }
-
-/* DIAGRAM */
-.diagram-box {
-background: #181818; border: 1px solid var(–border2);
-padding: 1.4rem 1.6rem; margin-bottom: 1.5rem;
-display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: center;
-}
-.diagram-box h3 {
-font-family: var(–display); font-size: 0.9rem; letter-spacing: 0.15em;
-text-transform: uppercase; color: #555; margin-bottom: 0.8rem;
-}
-.d-steps { display: flex; flex-direction: column; gap: 0.6rem; }
-.d-step {
-display: flex; align-items: flex-start; gap: 0.8rem;
-font-size: 1.05rem; font-family: var(–body); color: #bbb; line-height: 1.5;
-}
-.sn {
-width: 28px; height: 28px; border-radius: 50%;
-font-size: 0.8rem; font-weight: 700;
-display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
-}
-.sn.p1 { background: var(–plane1); color: white; }
-.sn.p2 { background: var(–plane2); color: white; }
-.sn.ok { background: var(–ok); color: white; }
-@media (max-width: 520px) { .diagram-box { grid-template-columns: 1fr; } .fan-svg { display: none; } }
-
-/* SECTION */
-.section {
-background: var(–surface); border: 1px solid var(–border);
-padding: 1.6rem 1.5rem; margin-bottom: 1.4rem;
-}
-.section.p1-active { border-left: 4px solid var(–plane1); }
-.section.p2-active { border-left: 4px solid var(–plane2); }
-.section-label { font-family: var(–mono); font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–ink3); margin-bottom: 0.4rem; }
-.section-title { font-family: var(–display); font-size: 1.35rem; font-weight: 700; color: var(–ink); margin-bottom: 1.3rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(–border); }
-
-.plane-badge {
-display: inline-block; font-family: var(–mono); font-size: 0.8rem;
-letter-spacing: 0.1em; text-transform: uppercase; padding: 0.3rem 0.8rem;
-margin-left: 0.6rem; vertical-align: middle;
-}
-.pb1 { background: rgba(255,85,51,0.15); color: var(–plane1); border: 1px solid var(–plane1); }
-.pb2 { background: rgba(68,136,255,0.15); color: var(–plane2); border: 1px solid var(–plane2); }
-
-/* INPUTS */
-.input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 1.2rem; }
-.input-group { display: flex; flex-direction: column; gap: 0.5rem; }
-.input-group label {
-font-family: var(–mono); font-size: 0.88rem; letter-spacing: 0.06em;
-text-transform: uppercase; color: var(–ink2); display: flex; align-items: center; gap: 0.5rem;
-}
-.dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-
-input {
-width: 100%;
-padding: 1.1rem 1.2rem;
-background: #0a0a0a !important;
-background-color: #0a0a0a !important;
-border: 2px solid #444 !important;
-color: #ffffff !important;
--webkit-text-fill-color: #ffffff !important;
-font-family: var(–mono);
-font-size: 1.35rem;
-outline: none !important;
--webkit-appearance: none !important;
--moz-appearance: none !important;
-appearance: none !important;
-border-radius: 4px !important;
-box-shadow: inset 0 0 0 9999px #0a0a0a !important;
-caret-color: #4488ff;
-display: block;
-}
-input:focus {
-border-color: #4488ff !important;
-box-shadow: inset 0 0 0 9999px #111 !important;
-background-color: #111 !important;
--webkit-text-fill-color: #ffffff !important;
-outline: none !important;
-}
-input::placeholder {
-color: #666 !important;
--webkit-text-fill-color: #666 !important;
-opacity: 1 !important;
-}
-input[type=“number”] { -moz-appearance: textfield !important; }
-input[type=“number”]::-webkit-outer-spin-button,
-input[type=“number”]::-webkit-inner-spin-button { -webkit-appearance: none !important; margin: 0; }
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
--webkit-box-shadow: 0 0 0px 9999px #0a0a0a inset !important;
--webkit-text-fill-color: #ffffff !important;
-}
-.input-unit { font-family: var(–mono); font-size: 0.82rem; color: var(–ink3); margin-top: 0.1rem; }
-
-.hint-box {
-font-size: 0.95rem; color: var(–ink2); line-height: 1.6;
-padding: 1rem 1.1rem; background: #1a1500;
-border-left: 3px solid var(–warn); margin-top: 0.9rem;
-}
-.hint-box strong { color: var(–ink); }
-
-.plane-divider {
-display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0;
-}
-.plane-divider span {
-font-family: var(–mono); font-size: 0.7rem; letter-spacing: 0.12em;
-text-transform: uppercase; color: var(–ink3); white-space: nowrap;
-}
-.plane-divider::before, .plane-divider::after {
-content: ‘’; flex: 1; height: 1px; background: var(–border);
+html, body {
+background: #0d0d0d;
+color: #f0f0f0;
+font-family: -apple-system, BlinkMacSystemFont, ‘Helvetica Neue’, Arial, sans-serif;
+min-height: 100vh;
+color-scheme: dark;
 }
 
-/* CALC BTN */
-.calc-btn {
-width: 100%;
-padding: 1.3rem;
-background: #ff5533 !important;
-background-color: #ff5533 !important;
-color: #ffffff !important;
--webkit-text-fill-color: #ffffff !important;
-border: none !important;
-font-family: var(–display);
-font-size: 1.25rem;
+.wrap {
+max-width: 600px;
+margin: 0 auto;
+padding: 24px 16px 60px;
+}
+
+/* HEADER */
+h1 {
+font-size: 28px;
+font-weight: 800;
+color: #ffffff;
+line-height: 1.2;
+margin-bottom: 4px;
+}
+h1 span { color: #ff5533; }
+.subtitle {
+font-size: 13px;
+color: #666;
+margin-bottom: 24px;
+font-family: monospace;
+}
+
+/* STEPS BOX */
+.steps-box {
+background: #1a1a1a;
+border: 1px solid #2a2a2a;
+border-left: 4px solid #4488ff;
+padding: 16px;
+margin-bottom: 24px;
+border-radius: 4px;
+}
+.steps-box h2 {
+font-size: 11px;
+color: #555;
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+.step-row {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-bottom: 8px;
+font-size: 15px;
+color: #bbb;
+}
+.step-dot {
+width: 22px; height: 22px;
+background: #4488ff;
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 11px; font-weight: 700; color: #fff;
+flex-shrink: 0; margin-top: 1px;
+}
+.step-dot.green { background: #00cc66; }
+
+/* CARD */
+.card {
+background: #141414;
+border: 1px solid #2a2a2a;
+border-left: 4px solid #4488ff;
+border-radius: 4px;
+padding: 20px 16px;
+margin-bottom: 16px;
+}
+.card-label {
+font-size: 11px;
+color: #555;
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-bottom: 4px;
+font-family: monospace;
+}
+.card-title {
+font-size: 20px;
 font-weight: 700;
-letter-spacing: 0.12em;
+color: #fff;
+margin-bottom: 20px;
+padding-bottom: 12px;
+border-bottom: 1px solid #2a2a2a;
+}
+.f2-badge {
+display: inline-block;
+background: #1a2a4a;
+color: #4488ff;
+border: 1px solid #4488ff;
+font-size: 12px;
+font-family: monospace;
+padding: 2px 8px;
+margin-left: 8px;
+vertical-align: middle;
+border-radius: 2px;
+}
+
+/* INPUT GROUP */
+.input-group {
+margin-bottom: 18px;
+}
+.input-label {
+display: flex;
+align-items: center;
+gap: 8px;
+font-size: 13px;
+font-family: monospace;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: #aaa;
+margin-bottom: 6px;
+}
+.color-dot {
+width: 10px; height: 10px;
+border-radius: 50%;
+flex-shrink: 0;
+}
+
+/* THE CRITICAL INPUT STYLE */
+.num-input {
+width: 100%;
+height: 56px;
+padding: 0 16px;
+font-size: 22px;
+font-family: monospace;
+font-weight: 500;
+color: #ffffff;
+background-color: #0a0a0a;
+border: 2px solid #444;
+border-radius: 6px;
+outline: none;
+-webkit-appearance: none;
+appearance: none;
+display: block;
+-webkit-text-fill-color: #ffffff;
+box-shadow: inset 0 0 0 9999px #0a0a0a;
+caret-color: #4488ff;
+}
+.num-input:focus {
+border-color: #4488ff;
+box-shadow: inset 0 0 0 9999px #111;
+-webkit-text-fill-color: #ffffff;
+}
+.num-input::placeholder {
+color: #444;
+-webkit-text-fill-color: #444;
+}
+
+.input-unit {
+font-size: 12px;
+color: #555;
+font-family: monospace;
+margin-top: 4px;
+}
+
+.hint {
+background: #1a1500;
+border-left: 3px solid #ffaa00;
+padding: 12px 14px;
+font-size: 14px;
+color: #aaa;
+line-height: 1.6;
+margin-top: 4px;
+border-radius: 0 4px 4px 0;
+}
+.hint strong { color: #eee; }
+
+/* BUTTON */
+.calc-button {
+display: block;
+width: 100%;
+height: 64px;
+margin-top: 16px;
+background-color: #ff5533;
+color: #ffffff;
+border: none;
+border-radius: 6px;
+font-size: 20px;
+font-weight: 800;
+letter-spacing: 3px;
 text-transform: uppercase;
 cursor: pointer;
-margin-top: 1.2rem;
-border-radius: 4px !important;
--webkit-appearance: none !important;
-appearance: none !important;
-display: block;
+-webkit-appearance: none;
+appearance: none;
+-webkit-text-fill-color: #ffffff;
+font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
 }
-.calc-btn:active { background: #cc3311 !important; background-color: #cc3311 !important; }
 
 /* RESULTS */
-#resultSection { display: none; }
-.result-planes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.2rem; }
-@media (max-width: 540px) { .result-planes { grid-template-columns: 1fr; } }
-
-.result-plane {
-border: 1px solid var(–border2); padding: 1.4rem;
-animation: popIn 0.35s ease forwards; background: var(–surface);
+#resultBox {
+display: none;
+margin-top: 20px;
 }
-.result-plane.rp1 { border-top: 4px solid var(–plane1); }
-.result-plane.rp2 { border-top: 4px solid var(–plane2); }
 
-@keyframes popIn { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
-
-.rp-title {
-font-family: var(–display); font-size: 1rem; font-weight: 700;
-letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem;
+.result-cards {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin-bottom: 16px;
 }
-.rp-title.c1 { color: var(–plane1); }
-.rp-title.c2 { color: var(–plane2); }
-
-.rp-main { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1rem; }
-.rp-card { padding: 1.1rem; text-align: center; border-radius: 2px; }
-.rp-card.filled1 { background: var(–plane1); }
-.rp-card.filled2 { background: var(–plane2); }
-.rp-card.dark { background: #222; }
-.rp-label { font-family: var(–mono); font-size: 0.75rem; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; text-transform: uppercase; }
-.rp-val { font-family: var(–display); font-size: 2rem; font-weight: 800; color: white; line-height: 1; }
-.rp-unit { font-family: var(–mono); font-size: 0.75rem; color: rgba(255,255,255,0.45); margin-top: 0.3rem; }
-
-.dials-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
-.dial-wrap { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
-.dial-lbl { font-family: var(–mono); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; }
-.dial-lbl.c1 { color: var(–plane1); }
-.dial-lbl.c2 { color: var(–plane2); }
-
-.result-rows { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
-.result-row {
-display: flex; justify-content: space-between; align-items: center;
-padding: 0.9rem 1.1rem; background: #1e1e1e; border: 1px solid var(–border);
-border-radius: 2px;
+.result-card {
+border-radius: 6px;
+padding: 16px;
+text-align: center;
 }
-.rr-label { color: var(–ink2); font-family: var(–mono); font-size: 0.9rem; }
-.rr-val { font-family: var(–mono); font-size: 1rem; font-weight: 500; color: var(–ink); }
-
-.placement-guide { background: #111; border: 1px solid var(–border2); padding: 1.4rem 1.5rem; margin-top: 1.2rem; }
-.pg-title { font-family: var(–display); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #444; margin-bottom: 1rem; }
-.pg-section { margin-bottom: 1rem; }
-.pg-section-title { font-family: var(–mono); font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.7rem; }
-.pg-section-title.c1 { color: var(–plane1); }
-.pg-section-title.c2 { color: var(–plane2); }
-.pg-steps { display: flex; flex-direction: column; gap: 0.7rem; }
-.pg-step { display: grid; grid-template-columns: 28px 1fr; gap: 0.8rem; align-items: start; font-family: var(–body); font-size: 1rem; color: #ccc; line-height: 1.5; word-break: break-word; }
-.pg-n { width: 28px; height: 28px; border-radius: 50%; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
-.pg-n.n1 { background: var(–plane1); color: white; }
-.pg-n.n2 { background: var(–plane2); color: white; }
-.pg-n.nok { background: var(–ok); color: white; }
-
-.status-banner {
-padding: 1.1rem 1.3rem; font-family: var(–body); font-size: 1rem;
-letter-spacing: 0.02em; display: flex; align-items: center; gap: 0.8rem; margin-top: 1rem;
-border-radius: 2px;
+.result-card.blue { background: #4488ff; }
+.result-card.dark { background: #222; }
+.rc-label {
+font-size: 11px;
+font-family: monospace;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: rgba(255,255,255,0.6);
+margin-bottom: 6px;
 }
-.status-banner.ok { background: rgba(0,204,102,0.1); border: 1.5px solid var(–ok); color: var(–ok); }
-.status-banner.warn { background: rgba(255,170,0,0.1); border: 1.5px solid var(–warn); color: var(–warn); }
+.rc-val {
+font-size: 32px;
+font-weight: 800;
+color: #fff;
+line-height: 1;
+}
+.rc-unit {
+font-size: 12px;
+color: rgba(255,255,255,0.5);
+margin-top: 4px;
+}
 
-.history-section { margin-top: 2rem; padding: 1.2rem 1.5rem; background: var(–surface); border: 1px solid var(–border); }
-.hist-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
-.hist-title { font-family: var(–mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(–ink3); }
-.hist-clear { font-family: var(–mono); font-size: 0.7rem; color: var(–accent); cursor: pointer; background: none; border: none; }
-.hist-table { width: 100%; border-collapse: collapse; font-family: var(–mono); font-size: 0.8rem; }
-.hist-table th { text-align: left; padding: 0.4rem 0.6rem; color: var(–ink3); border-bottom: 1px solid var(–border); font-weight: 400; }
-.hist-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(–border); color: var(–ink2); }
+.info-rows { margin-bottom: 16px; }
+.info-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 12px 14px;
+background: #1a1a1a;
+border: 1px solid #2a2a2a;
+border-radius: 4px;
+margin-bottom: 6px;
+font-family: monospace;
+}
+.info-row .lbl { font-size: 13px; color: #888; }
+.info-row .val { font-size: 14px; color: #eee; font-weight: 600; }
+
+.status-ok {
+background: rgba(0,204,102,0.1);
+border: 1.5px solid #00cc66;
+color: #00cc66;
+padding: 14px 16px;
+border-radius: 4px;
+font-size: 15px;
+margin-bottom: 16px;
+}
+.status-warn {
+background: rgba(255,170,0,0.1);
+border: 1.5px solid #ffaa00;
+color: #ffaa00;
+padding: 14px 16px;
+border-radius: 4px;
+font-size: 15px;
+margin-bottom: 16px;
+}
+
+.guide {
+background: #111;
+border: 1px solid #2a2a2a;
+border-radius: 6px;
+padding: 16px;
+margin-bottom: 16px;
+}
+.guide-title {
+font-size: 11px;
+font-family: monospace;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: #444;
+margin-bottom: 14px;
+}
+.guide-section-title {
+font-size: 12px;
+font-family: monospace;
+letter-spacing: 1px;
+text-transform: uppercase;
+color: #4488ff;
+margin-bottom: 10px;
+margin-top: 14px;
+}
+.guide-row {
+display: flex;
+align-items: flex-start;
+gap: 10px;
+margin-bottom: 10px;
+font-size: 16px;
+color: #ccc;
+line-height: 1.5;
+}
+.guide-num {
+width: 26px; height: 26px;
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 12px; font-weight: 700; color: #fff;
+flex-shrink: 0; margin-top: 1px;
+}
+.guide-num.blue { background: #4488ff; }
+.guide-num.green { background: #00cc66; }
+.highlight-blue { color: #4488ff; font-weight: 700; }
+.highlight-green { color: #00cc66; font-weight: 700; }
 
 .reset-btn {
-width: 100%; padding: 0.9rem; background: transparent; color: var(–ink2);
-border: 1px solid var(–border2); font-family: var(–mono); font-size: 0.78rem;
-letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; margin-top: 1rem; transition: all 0.15s;
+display: block;
+width: 100%;
+height: 52px;
+margin-top: 12px;
+background: transparent;
+color: #666;
+border: 1px solid #333;
+border-radius: 6px;
+font-size: 14px;
+font-family: monospace;
+letter-spacing: 2px;
+text-transform: uppercase;
+cursor: pointer;
+-webkit-appearance: none;
+appearance: none;
 }
-.reset-btn:hover { border-color: var(–ink2); color: var(–ink); }
 
-footer { margin-top: 2.5rem; padding-top: 1.2rem; border-top: 1px solid var(–border); }
-footer p { font-family: var(–mono); font-size: 0.7rem; color: var(–ink3); letter-spacing: 0.05em; }
+/* DIAL */
+.dial-wrap {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+margin: 16px 0;
+}
+.dial-label {
+font-size: 12px;
+font-family: monospace;
+color: #4488ff;
+letter-spacing: 1px;
+text-transform: uppercase;
+}
+
+footer {
+margin-top: 40px;
+padding-top: 16px;
+border-top: 1px solid #222;
+font-size: 12px;
+font-family: monospace;
+color: #444;
+}
 </style>
 
 </head>
 <body>
 <div class="wrap">
 
-<header>
-  <div>
-    <div class="h-title">Tek Düzlem<br><em>Fan Balans</em> Hesabı</div>
-    <div class="h-sub">// Fan Tarafı (F2) — 3 Nokta Yöntemi</div>
-  </div>
-</header>
+  <h1>Tek Düzlem<br><span>Fan Balans</span></h1>
+  <div class="subtitle">// Fan Tarafı (F2) — 3 Nokta Yöntemi</div>
 
-<div class="diagram-box">
-  <div>
-    <h3>// Uygulama Sırası</h3>
-    <div class="d-steps">
-      <div class="d-step"><span class="sn p2">1</span>Fan tarafı (F2): Ağırlıksız 1. ölçümü al</div>
-      <div class="d-step"><span class="sn p2">2</span>0° → 120° → 240° konumlarında deneme ağırlığıyla 3 tur ölçüm al</div>
-      <div class="d-step"><span class="sn ok">✓</span>Değerleri gir → hesapla → düzeltme ağırlığını tak</div>
+  <div class="steps-box">
+    <h2>// Uygulama Sırası</h2>
+    <div class="step-row">
+      <div class="step-dot">1</div>
+      <div>Fan tarafı (F2): Ağırlıksız 1. ölçümü al</div>
     </div>
-  </div>
-  <svg class="fan-svg" width="170" height="100" viewBox="0 0 170 100">
-    <line x1="10" y1="50" x2="160" y2="50" stroke="#444" stroke-width="3"/>
-    <rect x="16" y="38" width="18" height="24" rx="2" fill="#c84b2f" opacity="0.9"/>
-    <text x="25" y="78" text-anchor="middle" fill="#c84b2f" font-size="8" font-family="monospace">Motor</text>
-    <rect x="136" y="38" width="18" height="24" rx="2" fill="#2f6bc8" opacity="0.9"/>
-    <text x="145" y="78" text-anchor="middle" fill="#2f6bc8" font-size="8" font-family="monospace">Fan</text>
-    <ellipse cx="142" cy="50" rx="4" ry="24" fill="none" stroke="#2f6bc8" stroke-width="1.5" opacity="0.6"/>
-    <ellipse cx="142" cy="50" rx="24" ry="4" fill="none" stroke="#2f6bc8" stroke-width="1.5" opacity="0.6"/>
-    <rect x="34" y="34" width="42" height="32" rx="3" fill="#333"/>
-    <text x="25" y="18" text-anchor="middle" fill="#555" font-size="9" font-family="monospace">Motor</text>
-    <text x="145" y="18" text-anchor="middle" fill="#2f6bc8" font-size="9" font-family="monospace">F2</text>
-    <line x1="25" y1="20" x2="25" y2="38" stroke="#555" stroke-width="1" stroke-dasharray="2,2"/>
-    <line x1="145" y1="20" x2="145" y2="38" stroke="#2f6bc8" stroke-width="1" stroke-dasharray="2,2"/>
-  </svg>
-</div>
-
-<!-- F2 MEASUREMENTS -->
-
-<div class="section p2-active">
-  <div class="section-label">Fan Tarafı Ölçümleri</div>
-  <div class="section-title">4 Tur Titreşim Ölçümü <span class="plane-badge pb2">F2</span></div>
-  <div class="input-grid">
-    <div class="input-group">
-      <label><span class="dot" style="background:#555"></span>1. Ölçüm — Ağırlıksız</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_v0" placeholder="örn: 6.40">
-      <div class="input-unit">mm/s — 0 to peak — 1X bileşeni</div>
+    <div class="step-row">
+      <div class="step-dot">2</div>
+      <div>0° → 120° → 240° konumlarında deneme ağırlığıyla 3 tur ölçüm al</div>
     </div>
-    <div class="input-group">
-      <label><span class="dot" style="background:#c84b2f"></span>2. Ölçüm — Deneme ağırlığı 0°</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_vA" placeholder="örn: 8.10">
-      <div class="input-unit">mm/s — 0 to peak</div>
-    </div>
-    <div class="input-group">
-      <label><span class="dot" style="background:#e8a020"></span>3. Ölçüm — Deneme ağırlığı 120°</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_vB" placeholder="örn: 5.20">
-      <div class="input-unit">mm/s — 0 to peak</div>
-    </div>
-    <div class="input-group">
-      <label><span class="dot" style="background:#2f6bc8"></span>4. Ölçüm — Deneme ağırlığı 240°</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_vC" placeholder="örn: 7.30">
-      <div class="input-unit">mm/s — 0 to peak</div>
+    <div class="step-row">
+      <div class="step-dot green">✓</div>
+      <div>Değerleri gir → hesapla → düzeltme ağırlığını tak</div>
     </div>
   </div>
-  <div class="hint-box">
-    <strong>Ölçüm noktası:</strong> Fan yatak gövdesinden radyal yönde. Her turda deneme ağırlığını tamamen söküp sonraki konuma takın.
-  </div>
-</div>
 
-<!-- F2 TRIAL WEIGHT -->
+  <!-- MEASUREMENTS -->
 
-<div class="section p2-active">
-  <div class="section-label">Deneme Ağırlığı & Ekipman Bilgisi</div>
-  <div class="section-title">Fan Tarafı Deneme Ağırlığı <span class="plane-badge pb2">F2</span></div>
-  <div class="input-grid">
-    <div class="input-group">
-      <label>Deneme Ağırlığı (W_t)</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_wt" placeholder="örn: 60">
-      <div class="input-unit">gram</div>
-    </div>
-    <div class="input-group">
-      <label>Fan Ağırlığı</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_m" placeholder="örn: 12">
-      <div class="input-unit">kg</div>
-    </div>
-    <div class="input-group">
-      <label>Fan Yarıçapı</label>
-      <input type="text" inputmode="decimal" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="p2_r" placeholder="örn: 200">
-      <div class="input-unit">mm</div>
-    </div>
-    <div class="input-group">
-      <label>Devir (RPM)</label>
-      <input type="text" inputmode="numeric" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;border:2px solid #444!important;border-radius:4px!important;" id="rpm" placeholder="örn: 1480">
-      <div class="input-unit">rpm</div>
-    </div>
-  </div>
-</div>
-
-<button class="calc-btn" id="calcBtn" style="background:#ff5533!important;background-color:#ff5533!important;color:#ffffff!important;-webkit-text-fill-color:#ffffff!important;border:none!important;-webkit-appearance:none!important;">⟶ HESAPLA</button>
-
-<!-- RESULTS -->
-
-<div id="resultSection">
-  <div class="section" style="margin-top:1.5rem">
-    <div class="section-label">Sonuçlar</div>
-    <div class="section-title">Düzeltme Ağırlıkları & Konumlar</div>
+  <div class="card">
+    <div class="card-label">Fan Tarafı Ölçümleri</div>
+    <div class="card-title">4 Tur Titreşim Ölçümü <span class="f2-badge">F2</span></div>
 
 ```
-<div class="result-planes" style="grid-template-columns:1fr">
-  <div class="result-plane rp2">
-    <div class="rp-title c2">Fan Tarafı — F2</div>
-    <div class="rp-main">
-      <div class="rp-card filled2">
-        <div class="rp-label">Düzeltme Ağırlığı</div>
-        <div class="rp-val" id="p2_resW">—</div>
-        <div class="rp-unit">gram</div>
-      </div>
-      <div class="rp-card dark">
-        <div class="rp-label">Konum</div>
-        <div class="rp-val" id="p2_resA">—</div>
-        <div class="rp-unit">derece (0°'den)</div>
-      </div>
-    </div>
-    <div class="result-rows">
-      <div class="result-row"><span class="rr-label">Dengesizlik (U)</span><span class="rr-val" id="p2_U">—</span></div>
-      <div class="result-row"><span class="rr-label">Özgül dengesizlik (e)</span><span class="rr-val" id="p2_e">—</span></div>
-      <div class="result-row"><span class="rr-label">Hedef titreşim</span><span class="rr-val" id="p2_target">—</span></div>
-    </div>
+<div class="input-group">
+  <div class="input-label">
+    <span class="color-dot" style="background:#888"></span>
+    1. Ölçüm — Ağırlıksız
   </div>
+  <input class="num-input" id="v0" type="text" inputmode="decimal" placeholder="örn: 6.40">
+  <div class="input-unit">mm/s — 0 to peak — 1X bileşeni</div>
 </div>
 
-<div class="dials-row" style="grid-template-columns:1fr;max-width:220px;margin:1rem auto">
+<div class="input-group">
+  <div class="input-label">
+    <span class="color-dot" style="background:#ff5533"></span>
+    2. Ölçüm — Deneme ağırlığı 0°
+  </div>
+  <input class="num-input" id="vA" type="text" inputmode="decimal" placeholder="örn: 8.10">
+  <div class="input-unit">mm/s — 0 to peak</div>
+</div>
+
+<div class="input-group">
+  <div class="input-label">
+    <span class="color-dot" style="background:#ffaa00"></span>
+    3. Ölçüm — Deneme ağırlığı 120°
+  </div>
+  <input class="num-input" id="vB" type="text" inputmode="decimal" placeholder="örn: 5.20">
+  <div class="input-unit">mm/s — 0 to peak</div>
+</div>
+
+<div class="input-group">
+  <div class="input-label">
+    <span class="color-dot" style="background:#4488ff"></span>
+    4. Ölçüm — Deneme ağırlığı 240°
+  </div>
+  <input class="num-input" id="vC" type="text" inputmode="decimal" placeholder="örn: 7.30">
+  <div class="input-unit">mm/s — 0 to peak</div>
+</div>
+
+<div class="hint">
+  <strong>Ölçüm noktası:</strong> Fan yatak gövdesinden radyal yönde.
+  Her turda deneme ağırlığını tamamen söküp sonraki konuma takın.
+</div>
+```
+
+  </div>
+
+  <!-- TRIAL WEIGHT -->
+
+  <div class="card">
+    <div class="card-label">Deneme Ağırlığı &amp; Ekipman Bilgisi</div>
+    <div class="card-title">Fan Tarafı Deneme Ağırlığı <span class="f2-badge">F2</span></div>
+
+```
+<div class="input-group">
+  <div class="input-label">Deneme Ağırlığı (W_t)</div>
+  <input class="num-input" id="wt" type="text" inputmode="decimal" placeholder="örn: 60">
+  <div class="input-unit">gram</div>
+</div>
+
+<div class="input-group">
+  <div class="input-label">Fan Ağırlığı</div>
+  <input class="num-input" id="fanM" type="text" inputmode="decimal" placeholder="örn: 12">
+  <div class="input-unit">kg</div>
+</div>
+
+<div class="input-group">
+  <div class="input-label">Fan Yarıçapı</div>
+  <input class="num-input" id="fanR" type="text" inputmode="decimal" placeholder="örn: 200">
+  <div class="input-unit">mm</div>
+</div>
+
+<div class="input-group">
+  <div class="input-label">Devir (RPM)</div>
+  <input class="num-input" id="rpm" type="text" inputmode="numeric" placeholder="örn: 1480">
+  <div class="input-unit">rpm</div>
+</div>
+```
+
+  </div>
+
+<button class="calc-button" id="btn">⟶ HESAPLA</button>
+
+  <!-- RESULTS -->
+
+  <div id="resultBox">
+
+```
+<div class="card" style="border-left-color:#4488ff; margin-top:20px;">
+  <div class="card-label">Sonuç</div>
+  <div class="card-title">Düzeltme Ağırlığı &amp; Konum</div>
+
+  <div class="result-cards">
+    <div class="result-card blue">
+      <div class="rc-label">Düzeltme Ağırlığı</div>
+      <div class="rc-val" id="resW">—</div>
+      <div class="rc-unit">gram</div>
+    </div>
+    <div class="result-card dark">
+      <div class="rc-label">Konum</div>
+      <div class="rc-val" id="resA">—</div>
+      <div class="rc-unit">derece (0°'den)</div>
+    </div>
+  </div>
+
+  <div class="info-rows">
+    <div class="info-row">
+      <span class="lbl">Dengesizlik (U)</span>
+      <span class="val" id="resU">—</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Özgül dengesizlik (e)</span>
+      <span class="val" id="resE">—</span>
+    </div>
+    <div class="info-row">
+      <span class="lbl">Hedef titreşim</span>
+      <span class="val" id="resTgt">—</span>
+    </div>
+  </div>
+
+  <!-- DIAL -->
   <div class="dial-wrap">
-    <svg width="180" height="180" viewBox="0 0 180 180">
-      <circle cx="90" cy="90" r="82" fill="#1a1814" stroke="#333" stroke-width="1.5"/>
-      <g id="ticks2"></g>
-      <circle cx="90" cy="90" r="64" fill="none" stroke="#222" stroke-width="1"/>
-      <circle cx="90" cy="90" r="40" fill="none" stroke="#222" stroke-width="1"/>
-      <circle cx="170" cy="90" r="4" fill="#2f6bc8"/>
-      <text x="156" y="80" fill="#666" font-size="8" font-family="monospace">0°</text>
-      <circle cx="90" cy="90" r="7" fill="#333"/>
-      <line id="arrow2" x1="90" y1="90" x2="170" y2="90" stroke="#2f6bc8" stroke-width="3" stroke-linecap="round" style="display:none; transform-origin:90px 90px"/>
-      <circle id="dot2" cx="170" cy="90" r="6" fill="#2f6bc8" style="display:none; transform-origin:90px 90px"/>
-      <text id="lbl2" x="90" y="130" text-anchor="middle" fill="#2f6bc8" font-family="monospace" font-size="12" font-weight="bold" style="display:none"></text>
+    <svg id="dialSvg" width="200" height="200" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="90" fill="#111" stroke="#222" stroke-width="1.5"/>
+      <g id="dialTicks"></g>
+      <circle cx="100" cy="100" r="70" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+      <circle cx="100" cy="100" r="45" fill="none" stroke="#1a1a1a" stroke-width="1"/>
+      <circle cx="188" cy="100" r="5" fill="#4488ff"/>
+      <text x="168" y="90" fill="#555" font-size="10" font-family="monospace">0°</text>
+      <circle cx="100" cy="100" r="8" fill="#333"/>
+      <line id="dialArrow" x1="100" y1="100" x2="188" y2="100"
+        stroke="#4488ff" stroke-width="3" stroke-linecap="round"
+        style="display:none"/>
+      <circle id="dialDot" cx="188" cy="100" r="7" fill="#4488ff"
+        style="display:none"/>
+      <text id="dialLbl" x="100" y="148" text-anchor="middle"
+        fill="#4488ff" font-family="monospace" font-size="13" font-weight="bold"
+        style="display:none"></text>
     </svg>
-    <div class="dial-lbl c2">Fan Tarafı — F2</div>
+    <div class="dial-label">Fan Tarafı — F2</div>
   </div>
-</div>
 
-<div id="statusBanner" class="status-banner ok">
-  <span id="statusText">—</span>
-</div>
+  <div id="statusDiv" class="status-ok">—</div>
 
-<div class="placement-guide">
-  <div class="pg-title">// Yerleştirme Talimatı</div>
-  <div id="pgContent"></div>
-</div>
+  <div class="guide">
+    <div class="guide-title">// Yerleştirme Talimatı</div>
+    <div id="guideContent"></div>
+  </div>
 
-<button class="reset-btn" onclick="resetForm()">↺ Yeni Hesaplama</button>
+  <button class="reset-btn" id="resetBtn">↺ Yeni Hesaplama</button>
+</div>
 ```
 
   </div>
-</div>
 
-<!-- History -->
-
-<div class="history-section" id="histSection" style="display:none">
-  <div class="hist-header">
-    <div class="hist-title">// Hesaplama Geçmişi</div>
-    <button class="hist-clear" onclick="clearHistory()">Temizle</button>
-  </div>
-  <table class="hist-table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>1. Ölçüm</th><th>Düz. Ağırlık (g)</th><th>Konum (°)</th>
-      </tr>
-    </thead>
-    <tbody id="histBody"></tbody>
-  </table>
-</div>
-
-<footer>
-  <p>Tek Düzlem Fan Balans — 3 Nokta Yöntemi (Thearle) — 0-to-Peak Giriş</p>
-</footer>
+  <footer>Tek Düzlem Fan Balans — 3 Nokta Yöntemi — 0-to-Peak</footer>
 
 </div>
+
 <script>
-let historyData = [], histCount = 0;
-
 // Kadran çizgileri
 (function() {
-const g = document.getElementById(‘ticks2’);
-if (!g) return;
-for (let i = 0; i < 36; i++) {
-const rad = (i * 10) * Math.PI / 180;
-const isMajor = i % 3 === 0;
-const r1 = 82, r2 = isMajor ? 73 : 77;
-const line = document.createElementNS(‘http://www.w3.org/2000/svg’,‘line’);
-line.setAttribute(‘x1’, 90 + r1*Math.cos(rad));
-line.setAttribute(‘y1’, 90 + r1*Math.sin(rad));
-line.setAttribute(‘x2’, 90 + r2*Math.cos(rad));
-line.setAttribute(‘y2’, 90 + r2*Math.sin(rad));
-line.setAttribute(‘stroke’, isMajor ? ‘#555’ : ‘#2e2e2e’);
-line.setAttribute(‘stroke-width’, isMajor ? ‘1.5’ : ‘0.8’);
-g.appendChild(line);
-}
+  var g = document.getElementById('dialTicks');
+  for (var i = 0; i < 36; i++) {
+    var rad = i * 10 * Math.PI / 180;
+    var isMajor = (i % 3 === 0);
+    var r1 = 90, r2 = isMajor ? 80 : 85;
+    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', 100 + r1 * Math.cos(rad));
+    line.setAttribute('y1', 100 + r1 * Math.sin(rad));
+    line.setAttribute('x2', 100 + r2 * Math.cos(rad));
+    line.setAttribute('y2', 100 + r2 * Math.sin(rad));
+    line.setAttribute('stroke', isMajor ? '#444' : '#222');
+    line.setAttribute('stroke-width', isMajor ? '1.5' : '0.8');
+    g.appendChild(line);
+  }
 })();
 
-function parseVal(id) {
-var raw = document.getElementById(id).value;
-if (!raw) return NaN;
-raw = raw.trim().replace(’,’, ‘.’);
-return parseFloat(raw);
+function getVal(id) {
+  var el = document.getElementById(id);
+  if (!el) return NaN;
+  var s = el.value.replace(',', '.').trim();
+  if (s === '') return NaN;
+  return parseFloat(s);
 }
 
-function calcPlane(v0, vA, vB, vC, wt) {
-var v02=v0*v0, vA2=vA*vA, vB2=vB*vB, vC2=vC*vC;
-var dA=vA2-v02, dB=vB2-v02, dC=vC2-v02;
-var x = (2*dA - dB - dC) / 3.0;
-var y = (dB - dC) / Math.sqrt(3);
-var theta_rad = Math.atan2(y, x) / 2.0;
-var theta_deg = theta_rad * 180 / Math.PI;
-if (theta_deg < 0) theta_deg += 360;
-var corr_angle = (theta_deg + 180) % 360;
-var unbal_mag = Math.sqrt(x*x + y*y);
-var denom = Math.sqrt(unbal_mag / 3);
-if (denom < 0.001) denom = 0.001;
-var w_corr = (v0 * wt) / denom;
-if (w_corr < 0.5) w_corr = 0.5;
-if (w_corr > wt * 12) w_corr = wt * 12;
-return { angle: corr_angle, weight: w_corr };
+function doCalculate() {
+  var v0  = getVal('v0');
+  var vA  = getVal('vA');
+  var vB  = getVal('vB');
+  var vC  = getVal('vC');
+  var wt  = getVal('wt');
+  var fanM = getVal('fanM');
+  var fanR = getVal('fanR');
+  var rpm = getVal('rpm');
+
+  var names  = ['1. Ölçüm', '2. Ölçüm', '3. Ölçüm', '4. Ölçüm', 'Deneme Ağırlığı', 'Fan Ağırlığı', 'Fan Yarıçapı', 'RPM'];
+  var values = [v0, vA, vB, vC, wt, fanM, fanR, rpm];
+  var missing = [];
+  for (var i = 0; i < values.length; i++) {
+    if (isNaN(values[i]) || values[i] <= 0) {
+      missing.push(names[i]);
+    }
+  }
+  if (missing.length > 0) {
+    alert('Eksik alan:\n' + missing.join('\n'));
+    return;
+  }
+
+  // Thearle 3-nokta hesabı
+  var dA = vA*vA - v0*v0;
+  var dB = vB*vB - v0*v0;
+  var dC = vC*vC - v0*v0;
+  var x = (2*dA - dB - dC) / 3.0;
+  var y = (dB - dC) / Math.sqrt(3);
+  var thetaRad = Math.atan2(y, x) / 2.0;
+  var thetaDeg = thetaRad * 180 / Math.PI;
+  if (thetaDeg < 0) thetaDeg += 360;
+  var corrAngle = (thetaDeg + 180) % 360;
+  var unbalMag = Math.sqrt(x*x + y*y);
+  var denom = Math.sqrt(unbalMag / 3);
+  if (denom < 0.001) denom = 0.001;
+  var wCorr = (v0 * wt) / denom;
+  if (wCorr < 0.5) wCorr = 0.5;
+  if (wCorr > wt * 12) wCorr = wt * 12;
+
+  var U = wCorr * fanR;
+  var e = U / fanM;
+  var target = v0 * 0.35;
+
+  // Sonuçları göster
+  document.getElementById('resW').textContent = wCorr.toFixed(1);
+  document.getElementById('resA').textContent = corrAngle.toFixed(1) + '°';
+  document.getElementById('resU').textContent = U.toFixed(0) + ' g·mm';
+  document.getElementById('resE').textContent = e.toFixed(1) + ' μm';
+  document.getElementById('resTgt').textContent = '< ' + target.toFixed(2) + ' mm/s';
+
+  // Kadran
+  var rad = corrAngle * Math.PI / 180;
+  var len = 78;
+  var ax = 100 + len * Math.cos(rad);
+  var ay = 100 + len * Math.sin(rad);
+  document.getElementById('dialArrow').setAttribute('x2', ax);
+  document.getElementById('dialArrow').setAttribute('y2', ay);
+  document.getElementById('dialArrow').style.display = '';
+  document.getElementById('dialDot').setAttribute('cx', 100 + 82 * Math.cos(rad));
+  document.getElementById('dialDot').setAttribute('cy', 100 + 82 * Math.sin(rad));
+  document.getElementById('dialDot').style.display = '';
+  document.getElementById('dialLbl').textContent = corrAngle.toFixed(1) + '°';
+  document.getElementById('dialLbl').style.display = '';
+
+  // Status
+  var statusDiv = document.getElementById('statusDiv');
+  statusDiv.className = e < 60 ? 'status-ok' : 'status-warn';
+  statusDiv.textContent = e < 60
+    ? '✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın'
+    : '⚠ Yüksek dengesizlik — düzeltme sonrası doğrulama ölçümü kritik';
+
+  // En yakın referans
+  var pts = [{l:'0° (A noktası)', d:0}, {l:'120° (B noktası)', d:120}, {l:'240° (C noktası)', d:240}];
+  var nearLabel = pts[0].l, nearDiff = 999;
+  for (var i = 0; i < pts.length; i++) {
+    var diff = Math.abs(((corrAngle - pts[i].d + 540) % 360) - 180);
+    if (diff < nearDiff) { nearDiff = diff; nearLabel = pts[i].l; }
+  }
+
+  // Rehber
+  document.getElementById('guideContent').innerHTML =
+    '<div class="guide-section-title">Fan Tarafı (F2)</div>' +
+    '<div class="guide-row"><div class="guide-num blue">1</div><div>Ekipmanı durdurun — LOTO uygulayın</div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">2</div><div>0° referansından <span class="highlight-blue">' + corrAngle.toFixed(1) + '°</span> saat yönünde konumu işaretleyin</div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">3</div><div>İşaretlenen konuma <span class="highlight-blue">' + wCorr.toFixed(1) + ' gram</span> ağırlık takın (r = ' + fanR + ' mm)</div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">4</div><div>En yakın referans: <strong>' + nearLabel + '</strong></div></div>' +
+    '<div class="guide-section-title" style="color:#00cc66;margin-top:16px;">Doğrulama</div>' +
+    '<div class="guide-row"><div class="guide-num green">5</div><div>Ekipmanı çalıştırın ve ölçüm alın</div></div>' +
+    '<div class="guide-row"><div class="guide-num green">6</div><div>Hedef: <span class="highlight-green">&lt; ' + target.toFixed(2) + ' mm/s</span></div></div>' +
+    '<div class="guide-row"><div class="guide-num green">7</div><div>Hedef tutmadıysa 2. tur yapın — son ölçümü 1. ölçüm olarak girin</div></div>';
+
+  // Göster
+  document.getElementById('resultBox').style.display = 'block';
+  document.getElementById('resultBox').scrollIntoView({behavior: 'smooth', block: 'start'});
 }
 
-function updateDial(n, angleDeg) {
-var rad = angleDeg * Math.PI / 180;
-var cx=90, cy=90, len=72;
-document.getElementById(‘arrow’+n).setAttribute(‘x2’, cx+len*Math.cos(rad));
-document.getElementById(‘arrow’+n).setAttribute(‘y2’, cy+len*Math.sin(rad));
-document.getElementById(‘arrow’+n).style.display=’’;
-document.getElementById(‘dot’+n).setAttribute(‘cx’, cx+76*Math.cos(rad));
-document.getElementById(‘dot’+n).setAttribute(‘cy’, cy+76*Math.sin(rad));
-document.getElementById(‘dot’+n).style.display=’’;
-document.getElementById(‘lbl’+n).textContent = angleDeg.toFixed(1)+‘°’;
-document.getElementById(‘lbl’+n).style.display=’’;
+function doReset() {
+  var ids = ['v0','vA','vB','vC','wt','fanM','fanR','rpm'];
+  for (var i = 0; i < ids.length; i++) {
+    document.getElementById(ids[i]).value = '';
+  }
+  document.getElementById('resultBox').style.display = 'none';
+  window.scrollTo(0, 0);
 }
 
-function nearestPoint(angle) {
-var pts = [{l:‘0° (A noktası)’,d:0},{l:‘120° (B noktası)’,d:120},{l:‘240° (C noktası)’,d:240}];
-var best=pts[0], bd=999;
-for (var i=0; i<pts.length; i++) {
-var diff = Math.abs(((angle-pts[i].d+540)%360)-180);
-if (diff<bd) { bd=diff; best=pts[i]; }
-}
-return best.l;
-}
-
-function calculate() {
-var p2v0 = parseVal(‘p2_v0’);
-var p2vA = parseVal(‘p2_vA’);
-var p2vB = parseVal(‘p2_vB’);
-var p2vC = parseVal(‘p2_vC’);
-var p2wt = parseVal(‘p2_wt’);
-var p2r  = parseVal(‘p2_r’);
-var p2m  = parseVal(‘p2_m’);
-var rpm  = parseVal(‘rpm’);
-
-var vals   = [p2v0, p2vA, p2vB, p2vC, p2wt, p2r, p2m, rpm];
-var labels = [‘1. Ölçüm’,‘2. Ölçüm’,‘3. Ölçüm’,‘4. Ölçüm’,‘Deneme Ağırlığı’,‘Fan Yarıçapı’,‘Fan Ağırlığı’,‘RPM’];
-var empty = [];
-for (var i=0; i<vals.length; i++) {
-if (isNaN(vals[i]) || vals[i] <= 0) empty.push(labels[i]);
-}
-if (empty.length > 0) {
-alert(‘Eksik veya hatalı alan:\n’ + empty.join(’\n’));
-return;
-}
-
-var r2 = calcPlane(p2v0, p2vA, p2vB, p2vC, p2wt);
-var U2 = r2.weight * p2r;
-var e2 = U2 / p2m;
-
-document.getElementById(‘p2_resW’).textContent = r2.weight.toFixed(1);
-document.getElementById(‘p2_resA’).textContent = r2.angle.toFixed(1)+‘°’;
-document.getElementById(‘p2_U’).textContent = U2.toFixed(0)+’ g·mm’;
-document.getElementById(‘p2_e’).textContent = e2.toFixed(1)+’ μm’;
-document.getElementById(‘p2_target’).textContent = ‘< ‘+(p2v0*0.35).toFixed(2)+’ mm/s’;
-
-updateDial(2, r2.angle);
-
-var banner = document.getElementById(‘statusBanner’);
-banner.className = e2 < 60 ? ‘status-banner ok’ : ‘status-banner warn’;
-document.getElementById(‘statusText’).textContent = e2 < 60
-? ‘✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın’
-: ‘⚠ Yüksek dengesizlik — Düzeltme sonrası doğrulama ölçümü kritik’;
-
-document.getElementById(‘pgContent’).innerHTML =
-‘<div class="pg-section">’ +
-‘<div class="pg-section-title c2">Fan Tarafı (F2)</div>’ +
-‘<div class="pg-steps">’ +
-‘<div class="pg-step"><span class="pg-n n2">1</span><span>Ekipmanı durdurun — LOTO uygulayın</span></div>’ +
-‘<div class="pg-step"><span class="pg-n n2">2</span><span>0° referansından <strong style="color:#4488ff">’ + r2.angle.toFixed(1) + ‘°</strong> saat yönünde konumu işaretleyin</span></div>’ +
-‘<div class="pg-step"><span class="pg-n n2">3</span><span>İşaretlenen konuma <strong style="color:#4488ff">’ + r2.weight.toFixed(1) + ’ g</strong> ağırlık takın (r = ’ + p2r + ’ mm)</span></div>’ +
-‘<div class="pg-step"><span class="pg-n n2">4</span><span>En yakın referans: <strong style="color:#aaa">’ + nearestPoint(r2.angle) + ‘</strong></span></div>’ +
-‘</div>’ +
-‘</div>’ +
-‘<div class="pg-section" style="margin-top:0.8rem">’ +
-‘<div class="pg-section-title" style="color:#555">Doğrulama</div>’ +
-‘<div class="pg-steps">’ +
-‘<div class="pg-step"><span class="pg-n nok">5</span><span>Ekipmanı çalıştırın ve ölçüm alın</span></div>’ +
-‘<div class="pg-step"><span class="pg-n nok">6</span><span>Hedef: <strong style="color:#00cc66">< ’ + (p2v0*0.35).toFixed(2) + ’ mm/s</strong></span></div>’ +
-‘<div class="pg-step"><span class="pg-n nok">7</span><span>Hedef tutmadıysa 2. tur yapın — son ölçümü 1. ölçüm olarak girin</span></div>’ +
-‘</div>’ +
-‘</div>’;
-
-document.getElementById(‘resultSection’).style.display = ‘block’;
-document.getElementById(‘resultSection’).scrollIntoView({behavior:‘smooth’, block:‘start’});
-
-histCount++;
-historyData.push({ n: histCount, v0: p2v0, w: r2.weight.toFixed(1), a: r2.angle.toFixed(1) });
-renderHistory();
-}
-
-function renderHistory() {
-if (!historyData.length) { document.getElementById(‘histSection’).style.display=‘none’; return; }
-document.getElementById(‘histSection’).style.display = ‘block’;
-var rows = ‘’;
-for (var i = historyData.length-1; i >= 0; i–) {
-var h = historyData[i];
-rows += ‘<tr><td>’+h.n+’</td><td>’+h.v0+’</td>’ +
-‘<td style="color:var(--plane2);font-weight:500">’+h.w+’</td>’ +
-‘<td style="color:var(--plane2)">’+h.a+‘°</td></tr>’;
-}
-document.getElementById(‘histBody’).innerHTML = rows;
-}
-
-function clearHistory() { historyData = []; renderHistory(); }
-
-function resetForm() {
-var ids = [‘p2_v0’,‘p2_vA’,‘p2_vB’,‘p2_vC’,‘p2_wt’,‘p2_r’,‘p2_m’,‘rpm’];
-for (var i=0; i<ids.length; i++) {
-var el = document.getElementById(ids[i]);
-if (el) el.value = ‘’;
-}
-document.getElementById(‘resultSection’).style.display = ‘none’;
-window.scrollTo({top:0, behavior:‘smooth’});
-}
-
-// Butonu bağla - Safari için birden fazla yöntem
-var btn = document.getElementById(‘calcBtn’);
-if (btn) {
-btn.onclick = function() { calculate(); return false; };
-btn.addEventListener(‘touchend’, function(e) {
-e.preventDefault();
-calculate();
+// Buton bağlama
+document.getElementById('btn').addEventListener('click', doCalculate);
+document.getElementById('btn').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  doCalculate();
 });
-btn.addEventListener(‘click’, function(e) {
-e.preventDefault();
-calculate();
+
+document.getElementById('resetBtn').addEventListener('click', doReset);
+document.getElementById('resetBtn').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  doReset();
 });
-}
 </script>
 
 </body>
