@@ -1,224 +1,198 @@
 <!DOCTYPE html>
-<html lang="tr" style="background:#0d0d0d; color-scheme:dark;">
+<html lang="tr" style="background:#0d0d0d;color-scheme:dark;">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark">
 <title>Fan Balans</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  background: #0d0d0d;
-  color: #f0f0f0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
-  min-height: 100vh;
-  color-scheme: dark;
-}
-.wrap { max-width: 600px; margin: 0 auto; padding: 24px 16px 60px; }
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{background:#0d0d0d;color:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;min-height:100vh;color-scheme:dark;}
+.wrap{max-width:620px;margin:0 auto;padding:20px 14px 80px;}
 
-h1 { font-size: 28px; font-weight: 800; color: #ffffff; line-height: 1.2; margin-bottom: 4px; }
-h1 span { color: #ff5533; }
-.subtitle { font-size: 13px; color: #666; margin-bottom: 24px; font-family: monospace; }
+h1{font-size:26px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px;}
+h1 span{color:#ff5533;}
+.subtitle{font-size:12px;color:#555;margin-bottom:20px;font-family:monospace;}
 
-.steps-box {
-  background: #1a1a1a; border: 1px solid #2a2a2a;
-  border-left: 4px solid #4488ff;
-  padding: 16px; margin-bottom: 24px; border-radius: 4px;
-}
-.steps-box h2 { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-.step-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 8px; font-size: 15px; color: #bbb; }
-.step-dot { width: 22px; height: 22px; background: #4488ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 1px; }
-.step-dot.green { background: #00cc66; }
+/* ====== SEKME ÇUBUĞU ====== */
+.tab-bar{display:flex;gap:0;margin-bottom:20px;border:1px solid #2a2a2a;border-radius:8px;overflow:hidden;background:#111;}
+.tab-btn{flex:1;padding:12px 6px;font-size:12px;font-family:monospace;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;background:transparent;color:#555;border:none;cursor:pointer;transition:all 0.15s;position:relative;-webkit-appearance:none;}
+.tab-btn.active{background:#ff5533;color:#fff;}
+.tab-btn.has-result{color:#4488ff;}
+.tab-btn.has-result.active{background:#ff5533;color:#fff;}
+.tab-btn .tab-dot{width:6px;height:6px;border-radius:50%;background:#00cc66;display:inline-block;margin-left:4px;vertical-align:middle;}
+.tab-btn .tab-dot.hidden{display:none;}
+.tab-add{flex:0 0 44px;font-size:20px;color:#444;background:transparent;border:none;cursor:pointer;-webkit-appearance:none;}
+.tab-add:hover{color:#fff;}
 
-.card { background: #141414; border: 1px solid #2a2a2a; border-left: 4px solid #4488ff; border-radius: 4px; padding: 20px 16px; margin-bottom: 16px; }
-.card-label { font-size: 11px; color: #555; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; font-family: monospace; }
-.card-title { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid #2a2a2a; }
-.f2-badge { display: inline-block; background: #1a2a4a; color: #4488ff; border: 1px solid #4488ff; font-size: 12px; font-family: monospace; padding: 2px 8px; margin-left: 8px; vertical-align: middle; border-radius: 2px; }
+/* ====== KART ====== */
+.card{background:#141414;border:1px solid #2a2a2a;border-left:4px solid #4488ff;border-radius:4px;padding:18px 14px;margin-bottom:14px;}
+.card-label{font-size:11px;color:#555;letter-spacing:2px;text-transform:uppercase;margin-bottom:4px;font-family:monospace;}
+.card-title{font-size:19px;font-weight:700;color:#fff;margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #2a2a2a;}
+.f2-badge{display:inline-block;background:#1a2a4a;color:#4488ff;border:1px solid #4488ff;font-size:11px;font-family:monospace;padding:2px 7px;margin-left:8px;vertical-align:middle;border-radius:2px;}
 
-.input-group { margin-bottom: 18px; }
-.input-label { display: flex; align-items: center; gap: 8px; font-size: 13px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; color: #aaa; margin-bottom: 6px; }
-.color-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+/* ====== INPUT ====== */
+.input-group{margin-bottom:16px;}
+.input-label{display:flex;align-items:center;gap:8px;font-size:12px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:#aaa;margin-bottom:6px;}
+.color-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+input{width:100%;height:54px;padding:0 14px;font-size:21px;font-family:monospace;font-weight:500;color:#fff;background-color:#0a0a0a;border:2px solid #444;border-radius:6px;outline:none;-webkit-appearance:none;appearance:none;display:block;-webkit-text-fill-color:#fff;box-shadow:inset 0 0 0 9999px #0a0a0a;caret-color:#4488ff;}
+input:focus{border-color:#4488ff;box-shadow:inset 0 0 0 9999px #111;-webkit-text-fill-color:#fff;}
+input::placeholder{color:#444;-webkit-text-fill-color:#444;}
+input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus{-webkit-box-shadow:0 0 0px 9999px #0a0a0a inset!important;-webkit-text-fill-color:#fff!important;}
+.input-unit{font-size:11px;color:#555;font-family:monospace;margin-top:3px;}
+.hint{background:#1a1500;border-left:3px solid #ffaa00;padding:11px 13px;font-size:13px;color:#aaa;line-height:1.6;margin-top:4px;border-radius:0 4px 4px 0;}
+.hint strong{color:#eee;}
 
-input {
-  width: 100%; height: 56px; padding: 0 16px;
-  font-size: 22px; font-family: monospace; font-weight: 500;
-  color: #ffffff; background-color: #0a0a0a;
-  border: 2px solid #444; border-radius: 6px;
-  outline: none; -webkit-appearance: none; appearance: none; display: block;
-  -webkit-text-fill-color: #ffffff;
-  box-shadow: inset 0 0 0 9999px #0a0a0a;
-  caret-color: #4488ff;
-}
-input:focus { border-color: #4488ff; box-shadow: inset 0 0 0 9999px #111; -webkit-text-fill-color: #ffffff; }
-input::placeholder { color: #444; -webkit-text-fill-color: #444; }
-input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus {
-  -webkit-box-shadow: 0 0 0px 9999px #0a0a0a inset !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-.input-unit { font-size: 12px; color: #555; font-family: monospace; margin-top: 4px; }
+/* ====== BUTONLAR ====== */
+.calc-button{display:block;width:100%;height:62px;margin-top:14px;background-color:#ff5533;color:#fff;border:none;border-radius:6px;font-size:19px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;-webkit-appearance:none;appearance:none;-webkit-text-fill-color:#fff;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;}
+.pdf-button{display:block;width:100%;height:52px;margin-top:10px;background-color:#1a3a1a;color:#00cc66;border:1.5px solid #00cc66;border-radius:6px;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;-webkit-appearance:none;appearance:none;font-family:-apple-system,BlinkMacSystemFont,Arial,sans-serif;}
+.reset-btn{display:block;width:100%;height:50px;margin-top:10px;background:transparent;color:#555;border:1px solid #2a2a2a;border-radius:6px;font-size:13px;font-family:monospace;letter-spacing:2px;text-transform:uppercase;cursor:pointer;-webkit-appearance:none;appearance:none;}
 
-.hint { background: #1a1500; border-left: 3px solid #ffaa00; padding: 12px 14px; font-size: 14px; color: #aaa; line-height: 1.6; margin-top: 4px; border-radius: 0 4px 4px 0; }
-.hint strong { color: #eee; }
+/* ====== SONUÇ ====== */
+.result-box{display:none;margin-top:18px;}
+.result-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.result-card{border-radius:6px;padding:14px;text-align:center;}
+.result-card.blue{background:#2244aa;}
+.result-card.dark{background:#1a1a1a;border:1px solid #2a2a2a;}
+.rc-label{font-size:10px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.55);margin-bottom:5px;}
+.rc-val{font-size:30px;font-weight:800;color:#fff;line-height:1;}
+.rc-unit{font-size:11px;color:rgba(255,255,255,0.45);margin-top:3px;}
 
-.calc-button {
-  display: block; width: 100%; height: 64px; margin-top: 16px;
-  background-color: #ff5533; color: #ffffff; border: none; border-radius: 6px;
-  font-size: 20px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
-  cursor: pointer; -webkit-appearance: none; appearance: none;
-  -webkit-text-fill-color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-}
+.info-rows{margin-bottom:14px;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:4px;margin-bottom:5px;font-family:monospace;}
+.info-row .lbl{font-size:12px;color:#777;}
+.info-row .val{font-size:13px;color:#eee;font-weight:600;}
+.val.ok{color:#00cc66;}.val.warn{color:#ffaa00;}.val.bad{color:#ff5533;}
 
-/* RESULTS */
-#resultBox { display: none; margin-top: 20px; }
+.iso-banner{padding:11px 13px;border-radius:4px;margin-bottom:14px;font-family:monospace;font-size:12px;line-height:1.6;}
+.iso-banner.ok{background:rgba(0,204,102,0.1);border:1.5px solid #00cc66;color:#00cc66;}
+.iso-banner.warn{background:rgba(255,170,0,0.1);border:1.5px solid #ffaa00;color:#ffaa00;}
+.iso-banner.bad{background:rgba(255,85,51,0.1);border:1.5px solid #ff5533;color:#ff5533;}
 
-.result-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-.result-card { border-radius: 6px; padding: 16px; text-align: center; }
-.result-card.blue { background: #4488ff; }
-.result-card.dark { background: #222; }
-.rc-label { font-size: 11px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 6px; }
-.rc-val { font-size: 32px; font-weight: 800; color: #fff; line-height: 1; }
-.rc-unit { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+.speed-warn{background:rgba(255,85,51,0.08);border:1.5px solid #ff5533;color:#ff5533;padding:11px 13px;border-radius:4px;margin-bottom:14px;font-size:12px;font-family:monospace;line-height:1.6;}
+.speed-ok{background:rgba(0,204,102,0.08);border:1.5px solid #00cc66;color:#00cc66;padding:11px 13px;border-radius:4px;margin-bottom:14px;font-size:12px;font-family:monospace;line-height:1.6;}
+.second-run{background:#181818;border:1px solid #2a2a2a;border-left:4px solid #ffaa00;padding:13px 14px;border-radius:0 4px 4px 0;margin-bottom:14px;font-size:13px;color:#bbb;line-height:1.7;}
+.second-run strong{color:#ffaa00;}
+.status-ok{background:rgba(0,204,102,0.1);border:1.5px solid #00cc66;color:#00cc66;padding:13px 14px;border-radius:4px;font-size:14px;margin-bottom:14px;}
+.status-warn{background:rgba(255,170,0,0.1);border:1.5px solid #ffaa00;color:#ffaa00;padding:13px 14px;border-radius:4px;font-size:14px;margin-bottom:14px;}
 
-.info-rows { margin-bottom: 16px; }
-.info-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 4px; margin-bottom: 6px; font-family: monospace; }
-.info-row .lbl { font-size: 13px; color: #888; }
-.info-row .val { font-size: 14px; color: #eee; font-weight: 600; }
-.info-row .val.ok   { color: #00cc66; }
-.info-row .val.warn { color: #ffaa00; }
-.info-row .val.bad  { color: #ff5533; }
+.blade-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.blade-table th{background:#1a1a1a;color:#555;font-size:10px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;padding:7px 10px;text-align:left;border:1px solid #2a2a2a;}
+.blade-table td{padding:9px 10px;font-size:13px;font-family:monospace;color:#bbb;border:1px solid #2a2a2a;}
+.blade-table tr.best td{background:#1a2a1a;color:#00cc66;font-weight:700;}
 
-/* ISO G banner */
-.iso-banner {
-  padding: 12px 14px; border-radius: 4px; margin-bottom: 16px;
-  font-family: monospace; font-size: 13px; line-height: 1.6;
-  display: flex; align-items: flex-start; gap: 10px;
-}
-.iso-banner.ok   { background: rgba(0,204,102,0.1);  border: 1.5px solid #00cc66; color: #00cc66; }
-.iso-banner.warn { background: rgba(255,170,0,0.1);  border: 1.5px solid #ffaa00; color: #ffaa00; }
-.iso-banner.bad  { background: rgba(255,85,51,0.1);  border: 1.5px solid #ff5533; color: #ff5533; }
-.iso-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+.guide{background:#111;border:1px solid #2a2a2a;border-radius:6px;padding:14px;margin-bottom:14px;}
+.guide-title{font-size:10px;font-family:monospace;letter-spacing:2px;text-transform:uppercase;color:#333;margin-bottom:12px;}
+.guide-section-title{font-size:11px;font-family:monospace;letter-spacing:1px;text-transform:uppercase;color:#4488ff;margin-bottom:9px;margin-top:12px;}
+.guide-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:9px;font-size:15px;color:#ccc;line-height:1.5;}
+.guide-num{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px;}
+.guide-num.blue{background:#4488ff;}.guide-num.green{background:#00cc66;}
+.highlight-blue{color:#4488ff;font-weight:700;}.highlight-green{color:#00cc66;font-weight:700;}
 
-/* Kanat tablosu */
-.blade-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
-.blade-table th { background: #1a1a1a; color: #666; font-size: 11px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; padding: 8px 12px; text-align: left; border: 1px solid #2a2a2a; }
-.blade-table td { padding: 10px 12px; font-size: 14px; font-family: monospace; color: #ccc; border: 1px solid #2a2a2a; }
-.blade-table tr.best td { background: #1a2a1a; color: #00cc66; font-weight: 700; }
-.blade-table tr.best td:first-child::after { content: ' ✓'; color: #00cc66; }
+.dial-wrap{display:flex;flex-direction:column;align-items:center;gap:7px;margin:14px 0;}
+.dial-label{font-size:11px;font-family:monospace;color:#4488ff;letter-spacing:1px;text-transform:uppercase;}
+.section-divider{font-size:10px;font-family:monospace;color:#333;letter-spacing:2px;text-transform:uppercase;margin:18px 0 7px;padding-bottom:5px;border-bottom:1px solid #1a1a1a;}
 
-/* Kritik devir uyarısı */
-.speed-warn { background: rgba(255,85,51,0.08); border: 1.5px solid #ff5533; color: #ff5533; padding: 12px 14px; border-radius: 4px; margin-bottom: 16px; font-size: 13px; font-family: monospace; line-height: 1.6; }
-.speed-ok   { background: rgba(0,204,102,0.08); border: 1.5px solid #00cc66; color: #00cc66; padding: 12px 14px; border-radius: 4px; margin-bottom: 16px; font-size: 13px; font-family: monospace; line-height: 1.6; }
+/* ====== STEPS BOX ====== */
+.steps-box{background:#1a1a1a;border:1px solid #2a2a2a;border-left:4px solid #4488ff;padding:14px;margin-bottom:20px;border-radius:4px;}
+.steps-box h2{font-size:10px;color:#444;letter-spacing:2px;text-transform:uppercase;margin-bottom:11px;}
+.step-row{display:flex;align-items:flex-start;gap:9px;margin-bottom:7px;font-size:14px;color:#bbb;}
+.step-dot{width:21px;height:21px;background:#4488ff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;margin-top:1px;}
+.step-dot.green{background:#00cc66;}
 
-/* 2. tur tahmini */
-.second-run { background: #181818; border: 1px solid #2a2a2a; border-left: 4px solid #ffaa00; padding: 14px 16px; border-radius: 0 4px 4px 0; margin-bottom: 16px; font-size: 14px; color: #bbb; line-height: 1.7; }
-.second-run strong { color: #ffaa00; }
-
-.status-ok   { background: rgba(0,204,102,0.1);  border: 1.5px solid #00cc66; color: #00cc66;  padding: 14px 16px; border-radius: 4px; font-size: 15px; margin-bottom: 16px; }
-.status-warn { background: rgba(255,170,0,0.1);  border: 1.5px solid #ffaa00; color: #ffaa00;  padding: 14px 16px; border-radius: 4px; font-size: 15px; margin-bottom: 16px; }
-
-.guide { background: #111; border: 1px solid #2a2a2a; border-radius: 6px; padding: 16px; margin-bottom: 16px; }
-.guide-title { font-size: 11px; font-family: monospace; letter-spacing: 2px; text-transform: uppercase; color: #444; margin-bottom: 14px; }
-.guide-section-title { font-size: 12px; font-family: monospace; letter-spacing: 1px; text-transform: uppercase; color: #4488ff; margin-bottom: 10px; margin-top: 14px; }
-.guide-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 16px; color: #ccc; line-height: 1.5; }
-.guide-num { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #fff; flex-shrink: 0; margin-top: 1px; }
-.guide-num.blue  { background: #4488ff; }
-.guide-num.green { background: #00cc66; }
-.highlight-blue  { color: #4488ff; font-weight: 700; }
-.highlight-green { color: #00cc66; font-weight: 700; }
-
-.dial-wrap { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 16px 0; }
-.dial-label { font-size: 12px; font-family: monospace; color: #4488ff; letter-spacing: 1px; text-transform: uppercase; }
-
-.reset-btn { display: block; width: 100%; height: 52px; margin-top: 12px; background: transparent; color: #666; border: 1px solid #333; border-radius: 6px; font-size: 14px; font-family: monospace; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; -webkit-appearance: none; appearance: none; }
-
-footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #222; font-size: 12px; font-family: monospace; color: #444; }
-
-.section-divider { font-size: 11px; font-family: monospace; color: #444; letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 8px; padding-bottom: 6px; border-bottom: 1px solid #222; }
+footer{margin-top:40px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:11px;font-family:monospace;color:#333;}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <h1>Tek Düzlem<br><span>Fan Balans</span></h1>
-  <div class="subtitle">// Fan Tarafı (F2) — 3 Nokta Yöntemi</div>
+<h1>Tek Düzlem <span>Fan Balans</span></h1>
+<div class="subtitle">// Fan Tarafı (F2) — 3 Nokta Yöntemi</div>
+
+<!-- SEKME ÇUBUĞU -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" id="tab0" onclick="switchTab(0)">
+    1. Çalışma <span class="tab-dot hidden" id="dot0"></span>
+  </button>
+  <button class="tab-add" id="addTabBtn" onclick="addTab()" title="Yeni balans çalışması ekle">＋</button>
+</div>
+
+<!-- FORM ALANI (tüm sekmeler için tek form, JS ile doldurup boşaltıyoruz) -->
+<div id="formArea">
 
   <div class="steps-box">
     <h2>// Uygulama Sırası</h2>
-    <div class="step-row"><div class="step-dot">1</div><div>Fan tarafı (F2): Ağırlıksız 1. ölçümü al</div></div>
-    <div class="step-row"><div class="step-dot">2</div><div>0° → 120° → 240° konumlarında deneme ağırlığıyla 3 tur ölçüm al</div></div>
-    <div class="step-row"><div class="step-dot green">✓</div><div>Değerleri gir → hesapla → en yakın kanada ağırlığı tak</div></div>
+    <div class="step-row"><div class="step-dot">1</div><div>Ağırlıksız 1. ölçümü al (V0)</div></div>
+    <div class="step-row"><div class="step-dot">2</div><div>0° → 120° → 240° konumlarında 3 tur ölçüm al</div></div>
+    <div class="step-row"><div class="step-dot green">✓</div><div>Değerleri gir → Hesapla → En yakın kanada ağırlığı tak</div></div>
   </div>
 
   <!-- ÖLÇÜMLER -->
   <div class="card">
     <div class="card-label">Fan Tarafı Ölçümleri</div>
     <div class="card-title">4 Tur Titreşim Ölçümü <span class="f2-badge">F2</span></div>
-
     <div class="input-group">
-      <div class="input-label"><span class="color-dot" style="background:#888"></span>1. Ölçüm — Ağırlıksız</div>
-      <input id="v0"  type="text" inputmode="decimal" placeholder="örn: 6.40" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <div class="input-label"><span class="color-dot" style="background:#888"></span>1. Ölçüm — Ağırlıksız (V0)</div>
+      <input id="v0" type="text" inputmode="decimal" placeholder="örn: 6.40" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">mm/s — 0 to peak — 1X bileşeni</div>
     </div>
     <div class="input-group">
       <div class="input-label"><span class="color-dot" style="background:#ff5533"></span>2. Ölçüm — Deneme ağırlığı 0°</div>
-      <input id="vA"  type="text" inputmode="decimal" placeholder="örn: 8.10" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="vA" type="text" inputmode="decimal" placeholder="örn: 8.10" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
     <div class="input-group">
       <div class="input-label"><span class="color-dot" style="background:#ffaa00"></span>3. Ölçüm — Deneme ağırlığı 120°</div>
-      <input id="vB"  type="text" inputmode="decimal" placeholder="örn: 5.20" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="vB" type="text" inputmode="decimal" placeholder="örn: 5.20" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
     <div class="input-group">
       <div class="input-label"><span class="color-dot" style="background:#4488ff"></span>4. Ölçüm — Deneme ağırlığı 240°</div>
-      <input id="vC"  type="text" inputmode="decimal" placeholder="örn: 7.30" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="vC" type="text" inputmode="decimal" placeholder="örn: 7.30" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">mm/s — 0 to peak</div>
     </div>
     <div class="hint"><strong>Ölçüm noktası:</strong> Fan yatak gövdesinden radyal yönde. Her turda deneme ağırlığını tamamen söküp sonraki konuma takın.</div>
   </div>
 
-  <!-- EKİPMAN BİLGİSİ -->
+  <!-- EKİPMAN -->
   <div class="card">
-    <div class="card-label">Deneme Ağırlığı &amp; Ekipman Bilgisi</div>
-    <div class="card-title">Fan Tarafı Bilgileri <span class="f2-badge">F2</span></div>
-
+    <div class="card-label">Deneme Ağırlığı &amp; Ekipman</div>
+    <div class="card-title">Fan Bilgileri <span class="f2-badge">F2</span></div>
     <div class="input-group">
       <div class="input-label">Deneme Ağırlığı (W_t)</div>
-      <input id="wt"    type="text" inputmode="decimal" placeholder="örn: 60" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="wt" type="text" inputmode="decimal" placeholder="örn: 60" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">gram</div>
     </div>
     <div class="input-group">
       <div class="input-label">Fan Ağırlığı</div>
-      <input id="fanM"  type="text" inputmode="decimal" placeholder="örn: 25" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="fanM" type="text" inputmode="decimal" placeholder="örn: 25" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">kg</div>
     </div>
     <div class="input-group">
       <div class="input-label">Fan Yarıçapı</div>
-      <input id="fanR"  type="text" inputmode="decimal" placeholder="örn: 200" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="fanR" type="text" inputmode="decimal" placeholder="örn: 200" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">mm</div>
     </div>
     <div class="input-group">
       <div class="input-label">Devir (RPM)</div>
-      <input id="rpm"   type="text" inputmode="numeric" placeholder="örn: 1480" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
+      <input id="rpm" type="text" inputmode="numeric" placeholder="örn: 1480" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">rpm</div>
     </div>
     <div class="input-group">
       <div class="input-label">Fan Kanat Sayısı</div>
       <input id="blades" type="text" inputmode="numeric" placeholder="örn: 8" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
-      <div class="input-unit">adet — en yakın kanat tespiti için</div>
+      <div class="input-unit">adet — opsiyonel, en yakın kanat tespiti için</div>
     </div>
   </div>
 
   <button class="calc-button" id="btn" style="background:#ff5533!important;background-color:#ff5533!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:none!important;-webkit-appearance:none!important;">⟶ HESAPLA</button>
 
-  <!-- SONUÇLAR -->
-  <div id="resultBox">
-    <div class="card" style="border-left-color:#4488ff; margin-top:20px;">
+  <!-- SONUÇ KUTUSU -->
+  <div class="result-box" id="resultBox">
+    <div class="card" style="border-left-color:#4488ff;">
       <div class="card-label">Sonuç</div>
       <div class="card-title">Düzeltme Ağırlığı &amp; Konum</div>
 
-      <!-- Ana sonuç kartları -->
       <div class="result-cards">
         <div class="result-card blue">
           <div class="rc-label">Düzeltme Ağırlığı</div>
@@ -232,7 +206,6 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #222; font-s
         </div>
       </div>
 
-      <!-- Bilgi satırları -->
       <div class="info-rows">
         <div class="info-row"><span class="lbl">Dengesizlik (U)</span><span class="val" id="resU">—</span></div>
         <div class="info-row"><span class="lbl">Özgül dengesizlik (e)</span><span class="val" id="resE">—</span></div>
@@ -241,93 +214,182 @@ footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #222; font-s
         <div class="info-row"><span class="lbl">Çalışma frekansı</span><span class="val" id="resHz">—</span></div>
       </div>
 
-      <!-- ISO G sınıfı banner -->
-      <div id="isoBanner" class="iso-banner ok">
-        <span class="iso-icon">⚖</span>
-        <span id="isoText">—</span>
-      </div>
-
-      <!-- Kritik devir uyarısı -->
+      <div id="isoBanner" class="iso-banner ok">—</div>
       <div id="speedDiv" class="speed-ok">—</div>
-
-      <!-- 2. tur tahmini -->
       <div id="secondRunDiv" class="second-run">—</div>
 
       <!-- Kadran -->
       <div class="dial-wrap">
-        <svg id="dialSvg" width="200" height="200" viewBox="0 0 200 200">
+        <svg width="200" height="200" viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="90" fill="#111" stroke="#222" stroke-width="1.5"/>
           <g id="dialTicks"></g>
           <circle cx="100" cy="100" r="70" fill="none" stroke="#1a1a1a" stroke-width="1"/>
           <circle cx="100" cy="100" r="45" fill="none" stroke="#1a1a1a" stroke-width="1"/>
           <g id="bladeMarkers"></g>
           <circle cx="188" cy="100" r="5" fill="#4488ff"/>
-          <text x="168" y="90" fill="#555" font-size="10" font-family="monospace">0°</text>
+          <text x="167" y="89" fill="#444" font-size="9" font-family="monospace">0°</text>
           <circle cx="100" cy="100" r="8" fill="#333"/>
           <line id="dialArrow" x1="100" y1="100" x2="188" y2="100" stroke="#4488ff" stroke-width="3" stroke-linecap="round" style="display:none"/>
           <circle id="dialDot" cx="188" cy="100" r="7" fill="#4488ff" style="display:none"/>
           <text id="dialLbl" x="100" y="148" text-anchor="middle" fill="#4488ff" font-family="monospace" font-size="13" font-weight="bold" style="display:none"></text>
         </svg>
-        <div class="dial-label">Fan Tarafı — F2 &nbsp;|&nbsp; <span style="color:#888">● Kanat konumları</span></div>
+        <div class="dial-label">F2 &nbsp;|&nbsp; <span style="color:#555">● Kanat konumları</span></div>
       </div>
 
-      <!-- En yakın kanat tablosu -->
       <div class="section-divider">// En Yakın Kanat Analizi</div>
-      <table class="blade-table" id="bladeTableWrap">
-        <thead>
-          <tr>
-            <th>Kanat No</th>
-            <th>Konum</th>
-            <th>Fark</th>
-            <th>Durum</th>
-          </tr>
-        </thead>
+      <table class="blade-table">
+        <thead><tr><th>Kanat No</th><th>Konum</th><th>Fark</th><th>Durum</th></tr></thead>
         <tbody id="bladeTableBody"></tbody>
       </table>
 
-      <!-- Genel durum -->
       <div id="statusDiv" class="status-ok">—</div>
 
-      <!-- Yerleştirme rehberi -->
       <div class="guide">
         <div class="guide-title">// Yerleştirme Talimatı</div>
         <div id="guideContent"></div>
       </div>
 
-      <button class="reset-btn" id="resetBtn">↺ Yeni Hesaplama</button>
+      <button class="pdf-button" id="pdfBtn" onclick="downloadPDF()" style="background:#1a3a1a!important;background-color:#1a3a1a!important;color:#00cc66!important;-webkit-text-fill-color:#00cc66!important;border:1.5px solid #00cc66!important;-webkit-appearance:none!important;display:block;width:100%;height:52px;margin-top:10px;font-size:15px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;border-radius:6px;">⬇ PDF İndir</button>
+      <button class="reset-btn" id="resetBtn">↺ Bu Çalışmayı Temizle</button>
     </div>
   </div>
 
-  <footer>Tek Düzlem Fan Balans — 3 Nokta Yöntemi — 0-to-Peak</footer>
+</div><!-- /formArea -->
+
+<footer>Tek Düzlem Fan Balans — 3 Nokta Yöntemi — 0-to-Peak</footer>
 </div>
 
 <script>
-// Kadran çizgileri
+// ============================================================
+// VERİ YAPISI
+// Her sekme için ayrı state objesi
+// ============================================================
+var MAX_TABS = 5;
+var sessions = [newSession(1)];
+var activeTab = 0;
+
+function newSession(num) {
+  return {
+    num: num,
+    inputs: { v0:'', vA:'', vB:'', vC:'', wt:'', fanM:'', fanR:'', rpm:'', blades:'' },
+    result: null   // hesaplanmış sonuç objesi veya null
+  };
+}
+
+var INPUT_IDS = ['v0','vA','vB','vC','wt','fanM','fanR','rpm','blades'];
+
+// ============================================================
+// SEKME YÖNETİMİ
+// ============================================================
+function saveCurrentInputs() {
+  var s = sessions[activeTab];
+  for (var i = 0; i < INPUT_IDS.length; i++) {
+    var el = document.getElementById(INPUT_IDS[i]);
+    if (el) s.inputs[INPUT_IDS[i]] = el.value;
+  }
+}
+
+function loadSessionToForm(idx) {
+  var s = sessions[idx];
+  for (var i = 0; i < INPUT_IDS.length; i++) {
+    var el = document.getElementById(INPUT_IDS[i]);
+    if (el) el.value = s.inputs[INPUT_IDS[i]] || '';
+  }
+  if (s.result) {
+    renderResult(s.result);
+    document.getElementById('resultBox').style.display = 'block';
+  } else {
+    document.getElementById('resultBox').style.display = 'none';
+  }
+}
+
+function switchTab(idx) {
+  saveCurrentInputs();
+  activeTab = idx;
+  // Tab buton stillerini güncelle
+  for (var i = 0; i < sessions.length; i++) {
+    var btn = document.getElementById('tab' + i);
+    if (!btn) continue;
+    btn.className = 'tab-btn' + (sessions[i].result ? ' has-result' : '') + (i === activeTab ? ' active' : '');
+  }
+  loadSessionToForm(idx);
+  window.scrollTo(0, 0);
+}
+
+function addTab() {
+  if (sessions.length >= MAX_TABS) {
+    alert('En fazla ' + MAX_TABS + ' balans çalışması açılabilir.'); return;
+  }
+  saveCurrentInputs();
+  var newNum = sessions.length + 1;
+  sessions.push(newSession(newNum));
+  rebuildTabBar();
+  switchTab(sessions.length - 1);
+}
+
+function rebuildTabBar() {
+  var bar = document.getElementById('tabBar');
+  bar.innerHTML = '';
+  for (var i = 0; i < sessions.length; i++) {
+    var btn = document.createElement('button');
+    btn.className = 'tab-btn' + (sessions[i].result ? ' has-result' : '') + (i === activeTab ? ' active' : '');
+    btn.id = 'tab' + i;
+    btn.setAttribute('data-idx', i);
+    btn.innerHTML = (i + 1) + '. Çalışma <span class="tab-dot' + (sessions[i].result ? '' : ' hidden') + '" id="dot' + i + '"></span>';
+    (function(idx){ btn.addEventListener('click', function(){ switchTab(idx); }); })(i);
+    bar.appendChild(btn);
+  }
+  if (sessions.length < MAX_TABS) {
+    var addBtn = document.createElement('button');
+    addBtn.className = 'tab-add';
+    addBtn.id = 'addTabBtn';
+    addBtn.textContent = '＋';
+    addBtn.title = 'Yeni balans çalışması ekle';
+    addBtn.addEventListener('click', addTab);
+    bar.appendChild(addBtn);
+  }
+}
+
+// ============================================================
+// KADRAN ÇIZGILERI
+// ============================================================
 (function() {
   var g = document.getElementById('dialTicks');
   for (var i = 0; i < 36; i++) {
     var rad = i * 10 * Math.PI / 180;
     var isMajor = (i % 3 === 0);
     var r1 = 90, r2 = isMajor ? 80 : 85;
-    var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.setAttribute('x1', 100 + r1 * Math.cos(rad));
-    line.setAttribute('y1', 100 + r1 * Math.sin(rad));
-    line.setAttribute('x2', 100 + r2 * Math.cos(rad));
-    line.setAttribute('y2', 100 + r2 * Math.sin(rad));
+    var line = document.createElementNS('http://www.w3.org/2000/svg','line');
+    line.setAttribute('x1', 100 + r1*Math.cos(rad)); line.setAttribute('y1', 100 + r1*Math.sin(rad));
+    line.setAttribute('x2', 100 + r2*Math.cos(rad)); line.setAttribute('y2', 100 + r2*Math.sin(rad));
     line.setAttribute('stroke', isMajor ? '#444' : '#222');
     line.setAttribute('stroke-width', isMajor ? '1.5' : '0.8');
     g.appendChild(line);
   }
 })();
 
+// ============================================================
+// YARDIMCILAR
+// ============================================================
 function getVal(id) {
   var el = document.getElementById(id);
   if (!el) return NaN;
-  var s = el.value.replace(',', '.').trim();
-  if (s === '') return NaN;
-  return parseFloat(s);
+  var s = el.value.replace(',','.').trim();
+  return s === '' ? NaN : parseFloat(s);
 }
 
+function isoFromG(G) {
+  if (G < 1)   return {cls:'G1',   desc:'Hassas balans — Türbin seviyesi',           cat:'ok'};
+  if (G < 2.5) return {cls:'G2.5', desc:'İyi balans — Elektrik motoru seviyesi',     cat:'ok'};
+  if (G < 6.3) return {cls:'G6.3', desc:'Normal — Endüstriyel fan için kabul edilebilir', cat:'ok'};
+  if (G < 16)  return {cls:'G16',  desc:'Kaba balans — İyileştirme önerilir',         cat:'warn'};
+  if (G < 40)  return {cls:'G40',  desc:'Çok kaba — Ek balans turu gerekli',          cat:'warn'};
+  return       {cls:'G40+', desc:'Kritik dengesizlik — Acil müdahale gerekli',        cat:'bad'};
+}
+
+// ============================================================
+// HESAPLAMA
+// ============================================================
 function doCalculate() {
   var v0   = getVal('v0');
   var vA   = getVal('vA');
@@ -339,227 +401,339 @@ function doCalculate() {
   var rpm  = getVal('rpm');
   var nb   = getVal('blades');
 
-  // Validasyon (kanat sayısı opsiyonel)
   var names  = ['1. Ölçüm','2. Ölçüm','3. Ölçüm','4. Ölçüm','Deneme Ağırlığı','Fan Ağırlığı','Fan Yarıçapı','RPM'];
-  var values = [v0, vA, vB, vC, wt, fanM, fanR, rpm];
-  var missing = [];
-  for (var i = 0; i < values.length; i++) {
-    if (isNaN(values[i]) || values[i] <= 0) missing.push(names[i]);
-  }
-  if (missing.length > 0) { alert('Eksik alan:\n' + missing.join('\n')); return; }
+  var values = [v0,vA,vB,vC,wt,fanM,fanR,rpm];
+  var miss = [];
+  for (var i = 0; i < values.length; i++) { if (isNaN(values[i]) || values[i] <= 0) miss.push(names[i]); }
+  if (miss.length > 0) { alert('Eksik alan:\n' + miss.join('\n')); return; }
 
   var bladeCount = (!isNaN(nb) && nb >= 2) ? Math.round(nb) : 0;
 
-  // ---- Thearle 3-nokta balans ----
-  var dA = vA*vA - v0*v0;
-  var dB = vB*vB - v0*v0;
-  var dC = vC*vC - v0*v0;
+  var dA = vA*vA - v0*v0, dB = vB*vB - v0*v0, dC = vC*vC - v0*v0;
   var x  = (2*dA - dB - dC) / 3.0;
   var y  = (dB - dC) / Math.sqrt(3);
-  var thetaRad  = Math.atan2(y, x) / 2.0;
-  var thetaDeg  = thetaRad * 180 / Math.PI;
-  if (thetaDeg < 0) thetaDeg += 360;
-  var corrAngle = (thetaDeg + 180) % 360;
+  var tDeg = Math.atan2(y,x) / 2.0 * 180 / Math.PI;
+  if (tDeg < 0) tDeg += 360;
+  var corrAngle = (tDeg + 180) % 360;
   var unbalMag  = Math.sqrt(x*x + y*y);
-  var denom     = Math.sqrt(unbalMag / 3);
-  if (denom < 0.001) denom = 0.001;
-  var wCorr = (v0 * wt) / denom;
-  if (wCorr < 0.5)     wCorr = 0.5;
-  if (wCorr > wt * 12) wCorr = wt * 12;
+  var denom     = Math.sqrt(unbalMag/3); if (denom < 0.001) denom = 0.001;
+  var wCorr     = Math.min(Math.max((v0*wt)/denom, 0.5), wt*12);
+  var U = wCorr * fanR, e = U / fanM, target = v0 * 0.35;
+  var omega = rpm * 2 * Math.PI / 60, G = (e/1000) * omega, freqHz = rpm/60;
+  var iso = isoFromG(G);
+  var bpf = bladeCount > 0 ? freqHz * bladeCount : 0;
 
-  var U      = wCorr * fanR;          // g·mm
-  var e      = U / fanM;              // μm (g·mm / kg)
-  var target = v0 * 0.35;
-  var omega  = rpm * 2 * Math.PI / 60; // rad/s
-  var G      = (e / 1000) * omega;    // mm/s  (e μm → mm)
-  var freqHz = rpm / 60;
-
-  // ---- Ana sonuçlar ----
-  document.getElementById('resW').textContent  = wCorr.toFixed(1);
-  document.getElementById('resA').textContent  = corrAngle.toFixed(1) + '°';
-  document.getElementById('resU').textContent  = U.toFixed(0) + ' g·mm';
-  document.getElementById('resE').textContent  = e.toFixed(1) + ' μm';
-  document.getElementById('resTgt').textContent= '< ' + target.toFixed(2) + ' mm/s';
-  document.getElementById('resG').textContent  = 'G ' + G.toFixed(1);
-  document.getElementById('resHz').textContent = freqHz.toFixed(2) + ' Hz  (' + rpm + ' RPM)';
-
-  // renk e'ye göre
-  var eEl = document.getElementById('resE');
-  eEl.className = 'val ' + (e < 150 ? 'ok' : e < 400 ? 'warn' : 'bad');
-  var gEl = document.getElementById('resG');
-  gEl.className = 'val ' + (G < 6.3 ? 'ok' : G < 16 ? 'warn' : 'bad');
-
-  // ---- ISO G Sınıfı ----
-  var isoClass, isoDesc, isoCls;
-  if      (G < 1)   { isoClass='G1';   isoDesc='Hassas balans — Türbin, jiroskop seviyesi';           isoCls='ok'; }
-  else if (G < 2.5) { isoClass='G2.5'; isoDesc='İyi balans — Elektrik motoru, pompa seviyesi';        isoCls='ok'; }
-  else if (G < 6.3) { isoClass='G6.3'; isoDesc='Normal balans — Endüstriyel fan/pompa için kabul edilebilir'; isoCls='ok'; }
-  else if (G < 16)  { isoClass='G16';  isoDesc='Kaba balans — İyileştirme önerilir';                  isoCls='warn'; }
-  else if (G < 40)  { isoClass='G40';  isoDesc='Çok kaba balans — Ek balans turu gerekli';            isoCls='warn'; }
-  else              { isoClass='G40+'; isoDesc='Kritik dengesizlik — Acil müdahale gerekli';           isoCls='bad'; }
-
-  var icons = {ok:'⚖', warn:'⚠', bad:'⛔'};
-  var isoBanner = document.getElementById('isoBanner');
-  isoBanner.className = 'iso-banner ' + isoCls;
-  document.getElementById('isoIcon') && (document.getElementById('isoIcon').textContent = icons[isoCls]);
-  document.getElementById('isoText').textContent =
-    'ISO 1940-1  |  Hesaplanan G = ' + G.toFixed(1) + ' mm/s  →  ' + isoClass + '  |  ' + isoDesc;
-
-  // ---- Kritik Devir Uyarısı ----
-  // Pratik kural: tipik fan kritik devirler 1200-2000 RPM arası
-  // Bıçak geçiş frekansı = rpm/60 * kanat sayısı
-  var speedDiv = document.getElementById('speedDiv');
-  var bpf = bladeCount > 0 ? (rpm / 60 * bladeCount) : 0;
-  var critWarning = '';
-
-  // Düşük devir uyarısı (200 rpm altı — ölçüm güvenilirliği)
-  if (rpm < 200) {
-    speedDiv.className = 'speed-warn';
-    critWarning = '⚠ Devir çok düşük (' + rpm + ' RPM) — 3-nokta yöntemi düşük devirlerde hassasiyet kaybeder.';
-  }
-  // Yüksek devir — muhtemelen rezonans bölgesi
-  else if (rpm > 4000) {
-    speedDiv.className = 'speed-warn';
-    critWarning = '⚠ Yüksek devir (' + rpm + ' RPM — ' + freqHz.toFixed(1) + ' Hz). Titreşim artışı rezonans kaynaklı da olabilir, spektrum analizi önerilir.';
-  }
-  else {
-    speedDiv.className = 'speed-ok';
-    critWarning = '✓ Çalışma frekansı: ' + freqHz.toFixed(2) + ' Hz (' + rpm + ' RPM)';
-    if (bpf > 0) critWarning += '  |  Kanat geçiş frekansı (BPF): ' + bpf.toFixed(1) + ' Hz';
-  }
-  speedDiv.textContent = critWarning;
-
-  // ---- 2. Tur Tahmini ----
-  // 3-nokta yöntemi lineer model — büyük dengesizlikte kalan hata tahmini
-  // Tahmini kalan titreşim = orijinalin ~%30-50'si
-  var secondRunDiv = document.getElementById('secondRunDiv');
-  var estimatedRemaining = v0 * 0.40; // muhafazakar tahmin %40
-  if (e > 200 || G > 10) {
-    secondRunDiv.innerHTML =
-      '<strong>⚠ 2. Tur Gerekebilir:</strong> Yüksek dengesizlik nedeniyle ilk turdan sonra tahmini kalan titreşim ' +
-      '<strong>' + estimatedRemaining.toFixed(2) + ' mm/s</strong> civarında olabilir. ' +
-      'Doğrulama ölçümü alın; hedef (' + target.toFixed(2) + ' mm/s) tutmadıysa son ölçümü yeni 1. ölçüm olarak girerek 2. tur yapın.';
-  } else {
-    secondRunDiv.innerHTML =
-      '✓ Dengesizlik seviyesi makul — tek turda hedefe ulaşma olasılığı yüksek. ' +
-      'Doğrulama ölçümü yine de alınmalıdır.';
-  }
-
-  // ---- Kadran ----
-  var rad = corrAngle * Math.PI / 180;
-  var ax  = 100 + 78 * Math.cos(rad);
-  var ay  = 100 + 78 * Math.sin(rad);
-  document.getElementById('dialArrow').setAttribute('x2', ax);
-  document.getElementById('dialArrow').setAttribute('y2', ay);
-  document.getElementById('dialArrow').style.display = '';
-  document.getElementById('dialDot').setAttribute('cx', 100 + 82 * Math.cos(rad));
-  document.getElementById('dialDot').setAttribute('cy', 100 + 82 * Math.sin(rad));
-  document.getElementById('dialDot').style.display = '';
-  document.getElementById('dialLbl').textContent = corrAngle.toFixed(1) + '°';
-  document.getElementById('dialLbl').style.display = '';
-
-  // Kadran üzerinde kanat işaretleri
-  var bm = document.getElementById('bladeMarkers');
-  bm.innerHTML = '';
+  // En yakın kanatlar
+  var bladeList = [];
   if (bladeCount > 0) {
-    var bladeAngleStep = 360 / bladeCount;
+    var bStep = 360 / bladeCount;
     for (var b = 0; b < bladeCount; b++) {
-      var bAngle = b * bladeAngleStep;
-      var bRad   = bAngle * Math.PI / 180;
-      var bx = 100 + 70 * Math.cos(bRad);
-      var by = 100 + 70 * Math.sin(bRad);
-      var circ = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circ.setAttribute('cx', bx); circ.setAttribute('cy', by); circ.setAttribute('r', '4');
-      circ.setAttribute('fill', '#555');
-      bm.appendChild(circ);
+      var bDeg = b * bStep;
+      var diff = Math.abs(((corrAngle - bDeg + 540) % 360) - 180);
+      bladeList.push({num:b+1, deg:bDeg, diff:diff});
     }
+    bladeList.sort(function(a,b){ return a.diff - b.diff; });
   }
+  var nearLabel = bladeList.length > 0 ? 'Kanat ' + bladeList[0].num + ' (' + bladeList[0].deg.toFixed(1) + '°)' : '—';
 
-  // ---- En Yakın Kanat Tablosu ----
-  var tbody = document.getElementById('bladeTableBody');
-  tbody.innerHTML = '';
-  var nearBladeLabel = '—';
-  var nearBladeDeg   = corrAngle;
+  // Sonuç objesini oluştur
+  var res = {
+    v0:v0, vA:vA, vB:vB, vC:vC, wt:wt, fanM:fanM, fanR:fanR, rpm:rpm, bladeCount:bladeCount,
+    dA:dA, dB:dB, dC:dC, x:x, y:y,
+    corrAngle:corrAngle, wCorr:wCorr, U:U, e:e, target:target,
+    G:G, freqHz:freqHz, bpf:bpf, iso:iso, bladeList:bladeList, nearLabel:nearLabel
+  };
 
-  if (bladeCount > 0) {
-    var bladeStep = 360 / bladeCount;
-    var blades = [];
-    for (var b = 0; b < bladeCount; b++) {
-      var bDeg  = b * bladeStep;
-      var diff  = Math.abs(((corrAngle - bDeg + 540) % 360) - 180);
-      blades.push({ num: b+1, deg: bDeg, diff: diff });
-    }
-    blades.sort(function(a,b){ return a.diff - b.diff; });
-    var top3 = blades.slice(0, Math.min(3, blades.length));
-    nearBladeLabel = 'Kanat ' + top3[0].num + ' (' + top3[0].deg.toFixed(1) + '°)';
-    nearBladeDeg   = top3[0].deg;
+  // Sekmeye kaydet
+  saveCurrentInputs();
+  sessions[activeTab].result = res;
+  rebuildTabBar();
 
-    for (var t = 0; t < top3.length; t++) {
-      var bl  = top3[t];
-      var tr  = document.createElement('tr');
-      if (t === 0) tr.className = 'best';
-      tr.innerHTML =
-        '<td>Kanat ' + bl.num + '</td>' +
-        '<td>' + bl.deg.toFixed(1) + '°</td>' +
-        '<td>' + bl.diff.toFixed(1) + '°</td>' +
-        '<td>' + (t === 0 ? '✓ En yakın' : t === 1 ? '2. yakın' : '3. yakın') + '</td>';
-      tbody.appendChild(tr);
-    }
-
-    // En yakın kanatı kadrana yeşil işaretle
-    var bestRad = nearBladeDeg * Math.PI / 180;
-    var bc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    bc.setAttribute('cx', 100 + 70 * Math.cos(bestRad));
-    bc.setAttribute('cy', 100 + 70 * Math.sin(bestRad));
-    bc.setAttribute('r', '6');
-    bc.setAttribute('fill', '#00cc66');
-    bm.appendChild(bc);
-  } else {
-    tbody.innerHTML = '<tr><td colspan="4" style="color:#555;text-align:center;font-size:13px;">Kanat sayısı girilmedi</td></tr>';
-    // Referans noktaları göster
-    var refs = [{l:'0° (A)',d:0},{l:'120° (B)',d:120},{l:'240° (C)',d:240}];
-    var nearLabel2 = refs[0].l, nearDiff2 = 999;
-    for (var r = 0; r < refs.length; r++) {
-      var dff = Math.abs(((corrAngle - refs[r].d + 540) % 360) - 180);
-      if (dff < nearDiff2) { nearDiff2 = dff; nearLabel2 = refs[r].l; }
-    }
-    nearBladeLabel = nearLabel2;
-  }
-
-  // ---- Genel durum ----
-  var statusDiv = document.getElementById('statusDiv');
-  statusDiv.className = e < 400 ? 'status-ok' : 'status-warn';
-  statusDiv.textContent = e < 400
-    ? '✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın'
-    : '⚠ Yüksek dengesizlik — düzeltme sonrası doğrulama ölçümü kritik';
-
-  // ---- Yerleştirme Rehberi ----
-  document.getElementById('guideContent').innerHTML =
-    '<div class="guide-section-title">Fan Tarafı (F2)</div>' +
-    '<div class="guide-row"><div class="guide-num blue">1</div><div>Ekipmanı durdurun — LOTO uygulayın</div></div>' +
-    '<div class="guide-row"><div class="guide-num blue">2</div><div>0° referansından <span class="highlight-blue">' + corrAngle.toFixed(1) + '°</span> saat yönünde konumu işaretleyin</div></div>' +
-    '<div class="guide-row"><div class="guide-num blue">3</div><div>En yakın kanat: <span class="highlight-blue">' + nearBladeLabel + '</span></div></div>' +
-    '<div class="guide-row"><div class="guide-num blue">4</div><div>Bu konuma <span class="highlight-blue">' + wCorr.toFixed(1) + ' gram</span> ağırlık takın (r = ' + fanR + ' mm)</div></div>' +
-    '<div class="guide-section-title" style="color:#00cc66;margin-top:16px;">Doğrulama</div>' +
-    '<div class="guide-row"><div class="guide-num green">5</div><div>Ekipmanı çalıştırın ve ölçüm alın</div></div>' +
-    '<div class="guide-row"><div class="guide-num green">6</div><div>Hedef: <span class="highlight-green">&lt; ' + target.toFixed(2) + ' mm/s</span>  (ISO ' + isoClass + ' için)</div></div>' +
-    '<div class="guide-row"><div class="guide-num green">7</div><div>Hedef tutmadıysa 2. tur yapın — son ölçümü 1. ölçüm olarak girin</div></div>';
-
+  renderResult(res);
   document.getElementById('resultBox').style.display = 'block';
   document.getElementById('resultBox').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+// ============================================================
+// SONUÇ RENDER
+// ============================================================
+function renderResult(res) {
+  document.getElementById('resW').textContent   = res.wCorr.toFixed(1);
+  document.getElementById('resA').textContent   = res.corrAngle.toFixed(1) + '°';
+  document.getElementById('resU').textContent   = res.U.toFixed(0) + ' g·mm';
+  document.getElementById('resE').textContent   = res.e.toFixed(1) + ' μm';
+  document.getElementById('resTgt').textContent = '< ' + res.target.toFixed(2) + ' mm/s';
+  document.getElementById('resG').textContent   = 'G ' + res.G.toFixed(1);
+  document.getElementById('resHz').textContent  = res.freqHz.toFixed(2) + ' Hz  (' + res.rpm + ' RPM)';
+
+  var eEl = document.getElementById('resE');
+  eEl.className = 'val ' + (res.e < 150 ? 'ok' : res.e < 400 ? 'warn' : 'bad');
+  document.getElementById('resG').className = 'val ' + (res.G < 6.3 ? 'ok' : res.G < 16 ? 'warn' : 'bad');
+
+  // ISO banner
+  var isoBanner = document.getElementById('isoBanner');
+  isoBanner.className = 'iso-banner ' + res.iso.cat;
+  isoBanner.textContent = 'ISO 1940-1  |  G = ' + res.G.toFixed(1) + ' mm/s  →  ' + res.iso.cls + '  |  ' + res.iso.desc;
+
+  // Kritik devir
+  var speedDiv = document.getElementById('speedDiv');
+  var critTxt;
+  if (res.rpm < 200) {
+    speedDiv.className = 'speed-warn';
+    critTxt = '⚠ Devir çok düşük (' + res.rpm + ' RPM) — 3-nokta yöntemi düşük devirlerde hassasiyet kaybeder.';
+  } else if (res.rpm > 4000) {
+    speedDiv.className = 'speed-warn';
+    critTxt = '⚠ Yüksek devir (' + res.rpm + ' RPM — ' + res.freqHz.toFixed(1) + ' Hz). Spektrum analizi önerilir.';
+  } else {
+    speedDiv.className = 'speed-ok';
+    critTxt = '✓ Çalışma frekansı: ' + res.freqHz.toFixed(2) + ' Hz';
+    if (res.bpf > 0) critTxt += '  |  BPF: ' + res.bpf.toFixed(1) + ' Hz';
+  }
+  speedDiv.textContent = critTxt;
+
+  // 2. tur
+  var srDiv = document.getElementById('secondRunDiv');
+  if (res.e > 200 || res.G > 10) {
+    srDiv.innerHTML = '<strong>⚠ 2. Tur Gerekebilir:</strong> Yüksek dengesizlik — ilk turdan sonra tahmini kalan: <strong>' +
+      (res.v0 * 0.40).toFixed(2) + ' mm/s</strong>. Hedef (' + res.target.toFixed(2) + ' mm/s) tutmadıysa yeni sekme açıp 2. tur yapın.';
+  } else {
+    srDiv.innerHTML = '✓ Dengesizlik makul — tek turda hedefe ulaşma olasılığı yüksek.';
+  }
+
+  // Kadran
+  var rad = res.corrAngle * Math.PI / 180;
+  var ax = 100 + 78*Math.cos(rad), ay = 100 + 78*Math.sin(rad);
+  document.getElementById('dialArrow').setAttribute('x2', ax);
+  document.getElementById('dialArrow').setAttribute('y2', ay);
+  document.getElementById('dialArrow').style.display = '';
+  document.getElementById('dialDot').setAttribute('cx', 100 + 82*Math.cos(rad));
+  document.getElementById('dialDot').setAttribute('cy', 100 + 82*Math.sin(rad));
+  document.getElementById('dialDot').style.display = '';
+  document.getElementById('dialLbl').textContent = res.corrAngle.toFixed(1) + '°';
+  document.getElementById('dialLbl').style.display = '';
+
+  // Kanat işaretleri kadrana
+  var bm = document.getElementById('bladeMarkers'); bm.innerHTML = '';
+  if (res.bladeCount > 0) {
+    var bStep = 360 / res.bladeCount;
+    for (var b = 0; b < res.bladeCount; b++) {
+      var bRad = (b * bStep) * Math.PI / 180;
+      var circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circ.setAttribute('cx', 100 + 70*Math.cos(bRad));
+      circ.setAttribute('cy', 100 + 70*Math.sin(bRad));
+      circ.setAttribute('r','4'); circ.setAttribute('fill','#555');
+      bm.appendChild(circ);
+    }
+    if (res.bladeList.length > 0) {
+      var bestRad = res.bladeList[0].deg * Math.PI / 180;
+      var bc = document.createElementNS('http://www.w3.org/2000/svg','circle');
+      bc.setAttribute('cx', 100 + 70*Math.cos(bestRad));
+      bc.setAttribute('cy', 100 + 70*Math.sin(bestRad));
+      bc.setAttribute('r','6'); bc.setAttribute('fill','#00cc66');
+      bm.appendChild(bc);
+    }
+  }
+
+  // En yakın kanat tablosu
+  var tbody = document.getElementById('bladeTableBody'); tbody.innerHTML = '';
+  if (res.bladeList.length > 0) {
+    var top3 = res.bladeList.slice(0, Math.min(3, res.bladeList.length));
+    for (var t = 0; t < top3.length; t++) {
+      var bl = top3[t], tr = document.createElement('tr');
+      if (t === 0) tr.className = 'best';
+      tr.innerHTML = '<td>Kanat ' + bl.num + '</td><td>' + bl.deg.toFixed(1) + '°</td><td>' + bl.diff.toFixed(1) + '°</td><td>' + (t===0?'✓ En yakın':t===1?'2. yakın':'3. yakın') + '</td>';
+      tbody.appendChild(tr);
+    }
+  } else {
+    tbody.innerHTML = '<tr><td colspan="4" style="color:#444;text-align:center;font-size:12px;">Kanat sayısı girilmedi</td></tr>';
+  }
+
+  // Genel durum
+  var statusDiv = document.getElementById('statusDiv');
+  statusDiv.className = res.e < 400 ? 'status-ok' : 'status-warn';
+  statusDiv.textContent = res.e < 400
+    ? '✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın'
+    : '⚠ Yüksek dengesizlik — düzeltme sonrası doğrulama kritik';
+
+  // Rehber
+  document.getElementById('guideContent').innerHTML =
+    '<div class="guide-section-title">Fan Tarafı (F2)</div>' +
+    '<div class="guide-row"><div class="guide-num blue">1</div><div>Ekipmanı durdurun — LOTO uygulayın</div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">2</div><div>0°\'den <span class="highlight-blue">' + res.corrAngle.toFixed(1) + '°</span> saat yönünde konumu işaretleyin</div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">3</div><div>En yakın kanat: <span class="highlight-blue">' + res.nearLabel + '</span></div></div>' +
+    '<div class="guide-row"><div class="guide-num blue">4</div><div><span class="highlight-blue">' + res.wCorr.toFixed(1) + ' gram</span> ağırlık takın (r = ' + res.fanR + ' mm)</div></div>' +
+    '<div class="guide-section-title" style="color:#00cc66;margin-top:14px;">Doğrulama</div>' +
+    '<div class="guide-row"><div class="guide-num green">5</div><div>Ekipmanı çalıştırın ve ölçüm alın</div></div>' +
+    '<div class="guide-row"><div class="guide-num green">6</div><div>Hedef: <span class="highlight-green">&lt; ' + res.target.toFixed(2) + ' mm/s</span>  (ISO ' + res.iso.cls + ')</div></div>' +
+    '<div class="guide-row"><div class="guide-num green">7</div><div>Hedef tutmadıysa yeni sekme açıp 2. çalışma başlatın</div></div>';
+}
+
+// ============================================================
+// PDF İNDİR — window.print() tabanlı, CDN gerektirmez
+// ============================================================
+window.downloadPDF = function() {
+  var res = sessions[activeTab].result;
+  if (!res) { alert('Önce hesaplama yapın.'); return; }
+  var tabNum = activeTab + 1;
+  var today = new Date().toLocaleDateString('tr-TR');
+  var isoColor = res.iso.cat==='ok'?'#006633':res.iso.cat==='warn'?'#885500':'#cc2200';
+
+  var bladeRows = '';
+  if (res.bladeList.length > 0) {
+    var top3 = res.bladeList.slice(0, Math.min(3, res.bladeList.length));
+    for (var i = 0; i < top3.length; i++) {
+      bladeRows += '<tr'+(i===0?' style="background:#e8f5e9;font-weight:700;"':'')+'>'+
+        '<td>Kanat '+top3[i].num+'</td><td>'+top3[i].deg.toFixed(1)+'°</td>'+
+        '<td>'+top3[i].diff.toFixed(1)+'°</td><td>'+(i===0?'✓ En yakın':i===1?'2. yakın':'3. yakın')+'</td></tr>';
+    }
+  } else {
+    bladeRows = '<tr><td colspan="4" style="color:#999;text-align:center;">Kanat sayısı girilmedi</td></tr>';
+  }
+
+  var srTxt = (res.e > 200 || res.G > 10)
+    ? '<b style="color:#cc6600;">⚠ 2. Tur Gerekebilir:</b> Tahmini kalan: <b>'+(res.v0*0.40).toFixed(2)+' mm/s</b>. Hedef ('+res.target.toFixed(2)+' mm/s) tutmadıysa 2. çalışma başlatın.'
+    : '<span style="color:#006633;">✓</span> Dengesizlik makul — tek turda hedefe ulaşma olasılığı yüksek.';
+
+  var bpfRow = res.bpf > 0
+    ? '<tr style="background:#fafafa"><td>Kanat Geçiş Frekansı (BPF)</td><td><b>'+res.bpf.toFixed(1)+' Hz</b> ('+res.bladeCount+' × '+res.freqHz.toFixed(2)+' Hz)</td></tr>'
+    : '';
+
+  var bladeSection = res.bladeList.length > 0
+    ? '<div class="sec"><div class="st">En Yakın Kanat Analizi</div>'+
+      '<table><tr><th>Kanat</th><th>Konum</th><th>Fark</th><th>Durum</th></tr>'+bladeRows+'</table></div>'
+    : '';
+
+  var h = '<!DOCTYPE html><html lang="tr"><head><meta charset="UTF-8"><title>Fan Balans '+tabNum+'. Çalışma</title><style>'+
+    '*{box-sizing:border-box;margin:0;padding:0;}body{font-family:Arial,sans-serif;font-size:10.5pt;color:#111;}'+
+    '.pg{max-width:720px;margin:0 auto;padding:18px 24px;}'+
+    '.hdr{background:#0d0d0d;color:#fff;padding:10px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}'+
+    '.hdr h1{font-size:15pt;margin:0;color:#fff;}.hdr .dt{font-size:9pt;color:#aaa;}'+
+    '.sec{margin-bottom:16px;}.st{font-size:10.5pt;font-weight:700;color:#cc3311;border-bottom:2px solid #cc3311;padding-bottom:3px;margin-bottom:9px;letter-spacing:1px;text-transform:uppercase;}'+
+    'table{width:100%;border-collapse:collapse;margin-bottom:8px;}td,th{padding:5px 9px;border:1px solid #ddd;font-size:10pt;}th{background:#f0f0f0;font-weight:700;text-align:left;}'+
+    '.rb{font-size:15pt;font-weight:800;}.bl{color:#1144aa;}.rd{color:#cc3311;}.gr{color:#006633;}'+
+    '.ibox{padding:9px 12px;border-radius:3px;margin-bottom:10px;font-size:10pt;}'+
+    '.iok{background:#e8f5e9;border:1.5px solid #006633;color:#006633;}'+
+    '.iwarn{background:#fff8e0;border:1.5px solid #885500;color:#885500;}'+
+    '.ibad{background:#fdecea;border:1.5px solid #cc2200;color:#cc2200;}'+
+    '.sr{background:#fff8e0;border-left:4px solid #cc6600;padding:9px 12px;margin-bottom:10px;font-size:10pt;}'+
+    '.gs{display:flex;gap:9px;margin-bottom:6px;align-items:flex-start;font-size:10pt;}'+
+    '.gn{min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8.5pt;font-weight:700;color:#fff;flex-shrink:0;}'+
+    '.gb{background:#2255cc;}.gg{background:#006633;}'+
+    '.ft{margin-top:20px;padding-top:8px;border-top:1px solid #ddd;font-size:8pt;color:#999;text-align:center;}'+
+    '.pbtn{display:block;width:100%;padding:14px;background:#006633;color:#fff;border:none;border-radius:5px;font-size:13pt;font-weight:700;cursor:pointer;margin-top:18px;}'+
+    '@media print{.pbtn,.nop{display:none!important;}@page{margin:12mm;}}'+
+    '</style></head><body><div class="pg">'+
+    '<div class="hdr"><h1>Fan Balans — '+tabNum+'. Çalışma</h1><span class="dt">'+today+'</span></div>'+
+
+    '<div class="sec"><div class="st">Giriş Değerleri</div>'+
+    '<table><tr><th>Parametre</th><th>Sembol</th><th>Değer</th><th>Birim</th></tr>'+
+    '<tr><td>Referans Titreşim (V0 — Ağırlıksız)</td><td>V0</td><td>'+res.v0.toFixed(2)+'</td><td>mm/s</td></tr>'+
+    '<tr style="background:#fafafa"><td>0° Titreşim Değeri</td><td>VA</td><td>'+res.vA.toFixed(2)+'</td><td>mm/s</td></tr>'+
+    '<tr><td>120° Titreşim Değeri</td><td>VB</td><td>'+res.vB.toFixed(2)+'</td><td>mm/s</td></tr>'+
+    '<tr style="background:#fafafa"><td>240° Titreşim Değeri</td><td>VC</td><td>'+res.vC.toFixed(2)+'</td><td>mm/s</td></tr>'+
+    '<tr><td>Deneme Ağırlığı</td><td>Wt</td><td>'+res.wt.toFixed(1)+'</td><td>gram</td></tr>'+
+    '<tr style="background:#fafafa"><td>Fan Ağırlığı</td><td>—</td><td>'+res.fanM.toFixed(1)+'</td><td>kg</td></tr>'+
+    '<tr><td>Fan Yarıçapı</td><td>—</td><td>'+res.fanR.toFixed(0)+'</td><td>mm</td></tr>'+
+    '<tr style="background:#fafafa"><td>Devir</td><td>—</td><td>'+res.rpm+'</td><td>RPM</td></tr>'+
+    (res.bladeCount>0?'<tr><td>Kanat Sayısı</td><td>—</td><td>'+res.bladeCount+'</td><td>adet</td></tr>':'')+
+    '</table></div>'+
+
+    '<div class="sec"><div class="st">Ara Hesaplama Değerleri</div>'+
+    '<table><tr><th>Sembol</th><th>Hesaplama</th><th>Sonuç</th></tr>'+
+    '<tr><td>dA</td><td>VA² − V0²</td><td>'+res.dA.toFixed(4)+' (mm/s)²</td></tr>'+
+    '<tr style="background:#fafafa"><td>dB</td><td>VB² − V0²</td><td>'+res.dB.toFixed(4)+' (mm/s)²</td></tr>'+
+    '<tr><td>dC</td><td>VC² − V0²</td><td>'+res.dC.toFixed(4)+' (mm/s)²</td></tr>'+
+    '<tr style="background:#fafafa"><td>x</td><td>(2×dA − dB − dC) / 3</td><td>'+res.x.toFixed(4)+'</td></tr>'+
+    '<tr><td>y</td><td>(dB − dC) / √3</td><td>'+res.y.toFixed(4)+'</td></tr>'+
+    '</table></div>'+
+
+    '<div class="sec"><div class="st">Hesaplanan Sonuçlar</div>'+
+    '<table><tr><th>Sonuç</th><th>Sembol</th><th>Değer</th></tr>'+
+    '<tr><td>Düzeltme Ağırlığı Büyüklüğü</td><td>Wdüz</td><td><span class="rb rd">'+res.wCorr.toFixed(1)+' gram</span></td></tr>'+
+    '<tr style="background:#fafafa"><td>Yerleştirme Açısı</td><td>—</td><td><span class="rb bl">'+res.corrAngle.toFixed(1)+'°</span> (0°\'den saat yönünde)</td></tr>'+
+    (res.bladeList.length>0?'<tr><td>En Yakın Kanat</td><td>—</td><td><span class="gr" style="font-weight:700;">'+res.nearLabel+'</span> (fark: '+res.bladeList[0].diff.toFixed(1)+'°)</td></tr>':'')+
+    '<tr style="background:#fafafa"><td>Dengesizlik (U = Wdüz × r)</td><td>U</td><td>'+res.U.toFixed(0)+' g·mm</td></tr>'+
+    '<tr><td>Özgül Dengesizlik (e = U/m)</td><td>e</td><td>'+res.e.toFixed(1)+' μm</td></tr>'+
+    '<tr style="background:#fafafa"><td>Hedef Titreşim (V0 × 0,35)</td><td>—</td><td>&lt; '+res.target.toFixed(2)+' mm/s</td></tr>'+
+    '</table></div>'+
+
+    '<div class="sec"><div class="st">ISO 1940-1 Kalite Sınıfı &amp; Teknik Bilgi</div>'+
+    '<div class="ibox i'+res.iso.cat+'"><b>ISO '+res.iso.cls+'</b>  |  G = '+res.G.toFixed(2)+' mm/s  |  '+res.iso.desc+'</div>'+
+    '<table><tr><th>Parametre</th><th>Değer</th></tr>'+
+    '<tr><td>Hesaplanan G Değeri</td><td style="font-weight:700;color:'+isoColor+';">'+res.G.toFixed(2)+' mm/s → '+res.iso.cls+'</td></tr>'+
+    '<tr style="background:#fafafa"><td>Çalışma Frekansı</td><td>'+res.freqHz.toFixed(2)+' Hz ('+res.rpm+' RPM)</td></tr>'+
+    bpfRow+
+    '</table></div>'+
+
+    '<div class="sec"><div class="st">2. Tur Değerlendirmesi</div><div class="sr">'+srTxt+'</div></div>'+
+
+    bladeSection+
+
+    '<div class="sec"><div class="st">Yerleştirme Talimatı</div>'+
+    '<div class="gs"><div class="gn gb">1</div><div>Ekipmanı durdurun — LOTO uygulayın</div></div>'+
+    '<div class="gs"><div class="gn gb">2</div><div>0° referansından <b>'+res.corrAngle.toFixed(1)+'°</b> saat yönünde işaretleyin</div></div>'+
+    '<div class="gs"><div class="gn gb">3</div><div>En yakın kanat: <b>'+res.nearLabel+'</b></div></div>'+
+    '<div class="gs"><div class="gn gb">4</div><div><b>'+res.wCorr.toFixed(1)+' gram</b> ağırlık takın (r = '+res.fanR+' mm)</div></div>'+
+    '<div class="gs"><div class="gn gg">5</div><div>Ekipmanı çalıştırın ve doğrulama ölçümü alın</div></div>'+
+    '<div class="gs"><div class="gn gg">6</div><div>Hedef: <b>&lt; '+res.target.toFixed(2)+' mm/s</b> (ISO '+res.iso.cls+')</div></div>'+
+    '</div>'+
+
+    '<button class="pbtn" onclick="window.print()">⬇ PDF OLARAK KAYDET / YAZDIR</button>'+
+    '<p class="nop" style="font-size:9pt;color:#999;text-align:center;margin-top:6px;">Yazdır penceresinde → Hedef: PDF Kaydet</p>'+
+    '<div class="ft">Fan Balans Hesap Aracı — Thearle 3-Nokta Yöntemi — 0-to-Peak — '+today+'</div>'+
+    '</div></body></html>';
+
+  // Önce yeni sekme dene
+  var pw = null;
+  try { pw = window.open('', '_blank'); } catch(ignored) {}
+
+  if (pw && pw.document) {
+    pw.document.write(h);
+    pw.document.close();
+  } else {
+    // Popup engellenirse sayfada tam ekran iframe
+    var old = document.getElementById('_pf');
+    if (old) old.parentNode.removeChild(old);
+    var ifr = document.createElement('iframe');
+    ifr.id = '_pf';
+    ifr.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;z-index:99999;border:none;background:#fff;';
+    document.body.appendChild(ifr);
+    ifr.contentDocument.write(h);
+    ifr.contentDocument.close();
+    var cb = document.createElement('button');
+    cb.textContent = '✕ Kapat';
+    cb.style.cssText = 'position:fixed;top:12px;right:12px;z-index:100000;padding:10px 18px;background:#ff5533;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;';
+    cb.onclick = function(){ document.body.removeChild(ifr); document.body.removeChild(cb); };
+    document.body.appendChild(cb);
+  }
+};
+
+// ============================================================
+// RESET
+// ============================================================
 function doReset() {
-  var ids = ['v0','vA','vB','vC','wt','fanM','fanR','rpm','blades'];
-  for (var i = 0; i < ids.length; i++) document.getElementById(ids[i]).value = '';
+  sessions[activeTab] = newSession(activeTab + 1);
+  for (var i = 0; i < INPUT_IDS.length; i++) {
+    var el = document.getElementById(INPUT_IDS[i]);
+    if (el) el.value = '';
+  }
   document.getElementById('resultBox').style.display = 'none';
+  rebuildTabBar();
   window.scrollTo(0, 0);
 }
 
+// ============================================================
+// BUTON BAĞLAMA
+// ============================================================
 document.getElementById('btn').addEventListener('click', doCalculate);
 document.getElementById('btn').addEventListener('touchend', function(e){ e.preventDefault(); doCalculate(); });
+document.getElementById('pdfBtn').addEventListener('click', window.downloadPDF);
+document.getElementById('pdfBtn').addEventListener('touchend', function(e){ e.preventDefault(); window.downloadPDF(); });
 document.getElementById('resetBtn').addEventListener('click', doReset);
 document.getElementById('resetBtn').addEventListener('touchend', function(e){ e.preventDefault(); doReset(); });
+
+// İlk sekmeyi render et
+rebuildTabBar();
 </script>
 </body>
 </html>
