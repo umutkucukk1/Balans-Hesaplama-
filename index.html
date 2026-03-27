@@ -418,7 +418,7 @@ function doCalculate() {
   var unbalMag  = Math.sqrt(x*x + y*y);
   var denom     = Math.sqrt(unbalMag/3); if (denom < 0.001) denom = 0.001;
   var wCorr     = Math.min(Math.max((v0*wt)/denom, 0.5), wt*12);
-  var U = wCorr * fanR, e = U / fanM, target = v0 * 0.35;
+  var U = wCorr * fanR, e = U / fanM, target = v0 * 0.15;
   var omega = rpm * 2 * Math.PI / 60, G = (e/1000) * omega, freqHz = rpm/60;
   var iso = isoFromG(G);
   var bpf = bladeCount > 0 ? freqHz * bladeCount : 0;
@@ -495,7 +495,7 @@ function renderResult(res) {
   var srDiv = document.getElementById('secondRunDiv');
   if (res.e > 200 || res.G > 10) {
     srDiv.innerHTML = '<strong>⚠ 2. Tur Gerekebilir:</strong> Yüksek dengesizlik — ilk turdan sonra tahmini kalan: <strong>' +
-      (res.v0 * 0.40).toFixed(2) + ' mm/s</strong>. Hedef (' + res.target.toFixed(2) + ' mm/s) tutmadıysa yeni sekme açıp 2. tur yapın.';
+      (res.v0 * 0.20).toFixed(2) + ' mm/s</strong>. Hedef (' + res.target.toFixed(2) + ' mm/s) tutmadıysa yeni sekme açıp 2. tur yapın.';
   } else {
     srDiv.innerHTML = '✓ Dengesizlik makul — tek turda hedefe ulaşma olasılığı yüksek.';
   }
@@ -591,7 +591,7 @@ window.downloadPDF = function() {
   }
 
   var srTxt = (res.e > 200 || res.G > 10)
-    ? '<b style="color:#cc6600;">⚠ 2. Tur Gerekebilir:</b> Tahmini kalan: <b>'+(res.v0*0.40).toFixed(2)+' mm/s</b>. Hedef ('+res.target.toFixed(2)+' mm/s) tutmadıysa 2. çalışma başlatın.'
+    ? '<b style="color:#cc6600;">⚠ 2. Tur Gerekebilir:</b> Tahmini kalan: <b>'+(res.v0*0.20).toFixed(2)+' mm/s</b>. Hedef ('+res.target.toFixed(2)+' mm/s) tutmadıysa 2. çalışma başlatın.'
     : '<span style="color:#006633;">✓</span> Dengesizlik makul — tek turda hedefe ulaşma olasılığı yüksek.';
 
   var bpfRow = res.bpf > 0
@@ -654,7 +654,7 @@ window.downloadPDF = function() {
     (res.bladeList.length>0?'<tr><td>En Yakın Kanat</td><td>—</td><td><span class="gr" style="font-weight:700;">'+res.nearLabel+'</span> (fark: '+res.bladeList[0].diff.toFixed(1)+'°)</td></tr>':'')+
     '<tr style="background:#fafafa"><td>Dengesizlik (U = Wdüz × r)</td><td>U</td><td>'+res.U.toFixed(0)+' g·mm</td></tr>'+
     '<tr><td>Özgül Dengesizlik (e = U/m)</td><td>e</td><td>'+res.e.toFixed(1)+' μm</td></tr>'+
-    '<tr style="background:#fafafa"><td>Hedef Titreşim (V0 × 0,35)</td><td>—</td><td>&lt; '+res.target.toFixed(2)+' mm/s</td></tr>'+
+    '<tr style="background:#fafafa"><td>Hedef Titreşim (V0 × 0,15)</td><td>—</td><td>&lt; '+res.target.toFixed(2)+' mm/s  (%85 azalma hedefi)</td></tr>'+
     '</table></div>'+
 
     '<div class="sec"><div class="st">ISO 1940-1 Kalite Sınıfı &amp; Teknik Bilgi</div>'+
