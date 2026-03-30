@@ -101,6 +101,17 @@ input:-webkit-autofill,input:-webkit-autofill:hover,input:-webkit-autofill:focus
 .step-dot.green{background:#00cc66;}
 
 footer{margin-top:40px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:11px;font-family:monospace;color:#333;}
+
+/* ====== DÖNÜŞ YÖNÜ SEÇİCİ ====== */
+.dir-selector{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
+.dir-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 8px;background:#111;border:2px solid #333;border-radius:8px;cursor:pointer;-webkit-appearance:none;appearance:none;gap:3px;transition:all 0.15s;}
+.dir-btn.active{border-color:#ff5533;background:#1a0f0a;}
+.dir-icon{font-size:26px;color:#555;line-height:1;}
+.dir-btn.active .dir-icon{color:#ff5533;}
+.dir-text{font-size:12px;font-family:monospace;font-weight:700;color:#666;letter-spacing:0.5px;}
+.dir-btn.active .dir-text{color:#ff5533;}
+.dir-sub{font-size:10px;font-family:monospace;color:#444;letter-spacing:1px;}
+.dir-btn.active .dir-sub{color:#cc4422;}
 </style>
 </head>
 <body>
@@ -183,6 +194,23 @@ footer{margin-top:40px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:1
       <input id="blades" type="text" inputmode="numeric" placeholder="örn: 8" style="background:#0a0a0a!important;background-color:#0a0a0a!important;color:#fff!important;-webkit-text-fill-color:#fff!important;box-shadow:inset 0 0 0 9999px #0a0a0a!important;">
       <div class="input-unit">adet — opsiyonel, en yakın kanat tespiti için</div>
     </div>
+
+    <div class="input-group">
+      <div class="input-label">Fan Dönüş Yönü</div>
+      <div class="dir-selector">
+        <button class="dir-btn active" id="dirCW" onclick="setDir('CW')">
+          <span class="dir-icon">↻</span>
+          <span class="dir-text">Saat Yönü</span>
+          <span class="dir-sub">CW</span>
+        </button>
+        <button class="dir-btn" id="dirCCW" onclick="setDir('CCW')">
+          <span class="dir-icon">↺</span>
+          <span class="dir-text">Saat Yönü Tersi</span>
+          <span class="dir-sub">CCW</span>
+        </button>
+      </div>
+      <div class="input-unit">Açılar dönüş yönünün tersine işaretlenir</div>
+    </div>
   </div>
 
   <button class="calc-button" id="btn" style="background:#ff5533!important;background-color:#ff5533!important;color:#fff!important;-webkit-text-fill-color:#fff!important;border:none!important;-webkit-appearance:none!important;">⟶ HESAPLA</button>
@@ -220,20 +248,20 @@ footer{margin-top:40px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:1
 
       <!-- Kadran -->
       <div class="dial-wrap">
-        <svg width="200" height="200" viewBox="0 0 200 200">
+        <svg width="220" height="236" viewBox="-10 -20 220 236">
           <circle cx="100" cy="100" r="90" fill="#111" stroke="#222" stroke-width="1.5"/>
           <g id="dialTicks"></g>
           <circle cx="100" cy="100" r="70" fill="none" stroke="#1a1a1a" stroke-width="1"/>
           <circle cx="100" cy="100" r="45" fill="none" stroke="#1a1a1a" stroke-width="1"/>
           <g id="bladeMarkers"></g>
-          <circle cx="188" cy="100" r="5" fill="#4488ff"/>
-          <text x="167" y="89" fill="#444" font-size="9" font-family="monospace">0°</text>
+          <circle cx="100" cy="12" r="5" fill="#ff5533"/>
+          <text x="100" y="-8" text-anchor="middle" fill="#ff5533" font-size="12" font-family="monospace" font-weight="bold">0°</text>
           <circle cx="100" cy="100" r="8" fill="#333"/>
-          <line id="dialArrow" x1="100" y1="100" x2="188" y2="100" stroke="#4488ff" stroke-width="3" stroke-linecap="round" style="display:none"/>
-          <circle id="dialDot" cx="188" cy="100" r="7" fill="#4488ff" style="display:none"/>
-          <text id="dialLbl" x="100" y="148" text-anchor="middle" fill="#4488ff" font-family="monospace" font-size="13" font-weight="bold" style="display:none"></text>
+          <line id="dialArrow" x1="100" y1="100" x2="100" y2="22" stroke="#4488ff" stroke-width="3" stroke-linecap="round" style="display:none"/>
+          <circle id="dialDot" cx="100" cy="18" r="7" fill="#4488ff" style="display:none"/>
+          <text id="dialLbl" x="100" y="148" text-anchor="middle" fill="#88ccff" font-family="monospace" font-size="13" font-weight="bold" style="display:none"></text>
         </svg>
-        <div class="dial-label">F2 &nbsp;|&nbsp; <span style="color:#555">● Kanat konumları</span></div>
+        <div class="dial-label" id="dialFooter">F2 &nbsp;|&nbsp; <span style="color:#555">● Kanat konumları</span></div>
       </div>
 
       <div class="section-divider">// En Yakın Kanat Analizi</div>
@@ -261,6 +289,25 @@ footer{margin-top:40px;padding-top:14px;border-top:1px solid #1a1a1a;font-size:1
 
 <script>
 // ============================================================
+// DÖNÜŞ YÖNÜ
+// ============================================================
+var currentRotation = 'CW';
+
+window.setDir = function(dir) {
+  currentRotation = dir;
+  var cw  = document.getElementById('dirCW');
+  var ccw = document.getElementById('dirCCW');
+  if (!cw || !ccw) return;
+  if (dir === 'CW') {
+    cw.className  = 'dir-btn active';
+    ccw.className = 'dir-btn';
+  } else {
+    cw.className  = 'dir-btn';
+    ccw.className = 'dir-btn active';
+  }
+};
+
+// ============================================================
 // VERİ YAPISI
 // Her sekme için ayrı state objesi
 // ============================================================
@@ -271,7 +318,7 @@ var activeTab = 0;
 function newSession(num) {
   return {
     num: num,
-    inputs: { v0:'', vA:'', vB:'', vC:'', wt:'', fanM:'', fanR:'', rpm:'', blades:'' },
+    inputs: { v0:'', vA:'', vB:'', vC:'', wt:'', fanM:'', fanR:'', rpm:'', blades:'', rotation:'CW' },
     result: null   // hesaplanmış sonuç objesi veya null
   };
 }
@@ -287,6 +334,7 @@ function saveCurrentInputs() {
     var el = document.getElementById(INPUT_IDS[i]);
     if (el) s.inputs[INPUT_IDS[i]] = el.value;
   }
+  s.inputs.rotation = currentRotation;
 }
 
 function loadSessionToForm(idx) {
@@ -295,6 +343,7 @@ function loadSessionToForm(idx) {
     var el = document.getElementById(INPUT_IDS[i]);
     if (el) el.value = s.inputs[INPUT_IDS[i]] || '';
   }
+  setDir(s.inputs.rotation || 'CW');
   if (s.result) {
     renderResult(s.result);
     document.getElementById('resultBox').style.display = 'block';
@@ -356,7 +405,7 @@ function rebuildTabBar() {
 (function() {
   var g = document.getElementById('dialTicks');
   for (var i = 0; i < 36; i++) {
-    var rad = i * 10 * Math.PI / 180;
+    var rad = (i * 10 - 90) * Math.PI / 180;
     var isMajor = (i % 3 === 0);
     var r1 = 90, r2 = isMajor ? 80 : 85;
     var line = document.createElementNS('http://www.w3.org/2000/svg','line');
@@ -423,7 +472,8 @@ function doCalculate() {
   var iso = isoFromG(G);
   var bpf = bladeCount > 0 ? freqHz * bladeCount : 0;
 
-  // En yakın kanatlar
+  // En yakın kanatlar — corrAngle ile direkt karşılaştır
+  // Kanatlar ve corrAngle aynı referans sisteminde (CCW sayım CW fan için)
   var bladeList = [];
   if (bladeCount > 0) {
     var bStep = 360 / bladeCount;
@@ -438,6 +488,7 @@ function doCalculate() {
 
   // Sonuç objesini oluştur
   var res = {
+    rotation: currentRotation,
     v0:v0, vA:vA, vB:vB, vC:vC, wt:wt, fanM:fanM, fanR:fanR, rpm:rpm, bladeCount:bladeCount,
     dA:dA, dB:dB, dC:dC, x:x, y:y,
     corrAngle:corrAngle, wCorr:wCorr, U:U, e:e, target:target,
@@ -500,8 +551,13 @@ function renderResult(res) {
     srDiv.innerHTML = '✓ Dengesizlik makul — tek turda hedefe ulaşma olasılığı yüksek.';
   }
 
-  // Kadran
-  var rad = res.corrAngle * Math.PI / 180;
+  // Kadran — 0° yukarda (saat 12)
+  // CW fan: acilari CCW yonunde goster → svgDeg = -corrAngle - 90
+  // CCW fan: acilari CW yonunde goster → svgDeg = corrAngle - 90
+  var svgDeg = (res.rotation === 'CW')
+    ? (-res.corrAngle - 90)
+    : (res.corrAngle - 90);
+  var rad = svgDeg * Math.PI / 180;
   var ax = 100 + 78*Math.cos(rad), ay = 100 + 78*Math.sin(rad);
   document.getElementById('dialArrow').setAttribute('x2', ax);
   document.getElementById('dialArrow').setAttribute('y2', ay);
@@ -509,15 +565,70 @@ function renderResult(res) {
   document.getElementById('dialDot').setAttribute('cx', 100 + 82*Math.cos(rad));
   document.getElementById('dialDot').setAttribute('cy', 100 + 82*Math.sin(rad));
   document.getElementById('dialDot').style.display = '';
-  document.getElementById('dialLbl').textContent = res.corrAngle.toFixed(1) + '°';
-  document.getElementById('dialLbl').style.display = '';
+  // Açı etiketi — SVG dışında HTML div olarak göster (taşma sorunu yok)
+  var lblRad = svgDeg * Math.PI / 180;
+  var lblDist = 88;
+  var lblRawX = 100 + lblDist * Math.cos(lblRad);
+  var lblRawY = 100 + lblDist * Math.sin(lblRad);
+
+  // SVG'deki text elementini gizle
+  var lbl = document.getElementById('dialLbl');
+  lbl.style.display = 'none';
+  var existingRect = document.getElementById('dialLblBg');
+  if (existingRect) existingRect.parentNode.removeChild(existingRect);
+
+  // HTML overlay div — SVG'nin üzerine absolute konumlandır
+  var existingDiv = document.getElementById('dialAngleDiv');
+  if (existingDiv) existingDiv.parentNode.removeChild(existingDiv);
+
+  var dialWrap = document.querySelector('.dial-wrap');
+  if (dialWrap) {
+    // SVG boyutu 220x236, viewBox -10 -20 220 236
+    // Ekran piksel koordinatına çevir:
+    // svgX=0..220 viewBox → offsetX = (lblRawX + 10) / 220 * svgPixelW
+    var svgEl3 = document.querySelector('#resultBox svg');
+    var svgW = svgEl3 ? svgEl3.getBoundingClientRect().width  : 220;
+    var svgH = svgEl3 ? svgEl3.getBoundingClientRect().height : 236;
+    // viewBox: -10 -20 220 236  → scale = svgW/220, svgH/236
+    var scaleX = svgW / 220;
+    var scaleY = svgH / 236;
+    var pxX = (lblRawX + 10) * scaleX;  // +10 viewBox offset
+    var pxY = (lblRawY + 20) * scaleY;  // +20 viewBox offset
+
+    var angleDiv = document.createElement('div');
+    angleDiv.id = 'dialAngleDiv';
+    angleDiv.textContent = res.corrAngle.toFixed(1) + '°';
+    angleDiv.style.cssText =
+      'position:absolute;' +
+      'left:' + pxX.toFixed(0) + 'px;' +
+      'top:' + pxY.toFixed(0) + 'px;' +
+      'transform:translate(-50%,-50%);' +
+      'background:#050d1a;' +
+      'border:1.5px solid #3377cc;' +
+      'border-radius:5px;' +
+      'padding:3px 8px;' +
+      'font-size:13px;' +
+      'font-weight:bold;' +
+      'font-family:monospace;' +
+      'color:#66aaff;' +
+      'pointer-events:none;' +
+      'white-space:nowrap;' +
+      'z-index:10;';
+    dialWrap.style.position = 'relative';
+    dialWrap.appendChild(angleDiv);
+  }
 
   // Kanat işaretleri kadrana
   var bm = document.getElementById('bladeMarkers'); bm.innerHTML = '';
   if (res.bladeCount > 0) {
     var bStep = 360 / res.bladeCount;
     for (var b = 0; b < res.bladeCount; b++) {
-      var bRad = (b * bStep) * Math.PI / 180;
+      // CW fan: kanatlar CCW yönünde sayılır → svgDeg = -(b*step) - 90
+      // CCW fan: kanatlar CW yönünde sayılır  → svgDeg = (b*step) - 90
+      var bSvgDeg = (res.rotation === 'CW')
+        ? (-(b * bStep) - 90)
+        : (b * bStep - 90);
+      var bRad = bSvgDeg * Math.PI / 180;
       var circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
       circ.setAttribute('cx', 100 + 70*Math.cos(bRad));
       circ.setAttribute('cy', 100 + 70*Math.sin(bRad));
@@ -525,13 +636,111 @@ function renderResult(res) {
       bm.appendChild(circ);
     }
     if (res.bladeList.length > 0) {
-      var bestRad = res.bladeList[0].deg * Math.PI / 180;
+      // Yeşil nokta: corrAngle'a en yakın kanat (bladeList zaten buna göre sıralı)
+      // Kanatlar ve corrAngle artık aynı referans sisteminde (CW→CCW sayım)
+      var bestK = res.bladeList[0];
+      var bestKSvgDeg = (res.rotation === 'CW')
+        ? (-(bestK.deg / (360/res.bladeCount) * (360/res.bladeCount)) - 90)
+        : (bestK.deg - 90);
+      // Daha basit: kanat indexini bul ve aynı formülle hesapla
+      var bestKIdx = bestK.num - 1;
+      var bestKStep = 360 / res.bladeCount;
+      var bestKSvg = (res.rotation === 'CW')
+        ? (-(bestKIdx * bestKStep) - 90)
+        : (bestKIdx * bestKStep - 90);
+      var bestBladeRad = bestKSvg * Math.PI / 180;
+
+      // Büyük yeşil daire
       var bc = document.createElementNS('http://www.w3.org/2000/svg','circle');
-      bc.setAttribute('cx', 100 + 70*Math.cos(bestRad));
-      bc.setAttribute('cy', 100 + 70*Math.sin(bestRad));
-      bc.setAttribute('r','6'); bc.setAttribute('fill','#00cc66');
+      bc.setAttribute('cx', (100 + 70*Math.cos(bestBladeRad)).toFixed(1));
+      bc.setAttribute('cy', (100 + 70*Math.sin(bestBladeRad)).toFixed(1));
+      bc.setAttribute('r','9'); bc.setAttribute('fill','#00cc66');
+      bc.setAttribute('stroke','#004400'); bc.setAttribute('stroke-width','2');
       bm.appendChild(bc);
+
+      // Kanat numarası — dairenin içinde
+      var bLblX = 100 + 70 * Math.cos(bestBladeRad);
+      var bLblY = 100 + 70 * Math.sin(bestBladeRad);
+      var bLbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+      bLbl.setAttribute('x', bLblX.toFixed(1));
+      bLbl.setAttribute('y', (bLblY + 4).toFixed(1));
+      bLbl.setAttribute('text-anchor','middle');
+      bLbl.setAttribute('fill','#001a00');
+      bLbl.setAttribute('font-size','8');
+      bLbl.setAttribute('font-family','monospace');
+      bLbl.setAttribute('font-weight','bold');
+      bLbl.textContent = 'K' + bestK.num;
+      bm.appendChild(bLbl);
     }
+  }
+
+  // Kadrana dönüş yönü oku
+  var existingArrow = document.getElementById('rotArrow');
+  if (existingArrow) existingArrow.parentNode.removeChild(existingArrow);
+  var svgEl = document.querySelector('#resultBox svg');
+  if (svgEl) {
+    // Dönüş yönü oku — daire üzerinde kıvrık ok (arc path)
+    // CW → saat yönü (sağ üst bölge), CCW → saat yönü tersi (sol üst bölge)
+    var rotG = document.createElementNS('http://www.w3.org/2000/svg','g');
+    rotG.setAttribute('id','rotArrow');
+    // Ok yayı r=55, merkez (100,100)
+    var r = 55;
+    if (res.rotation === 'CW') {
+      // Saat yönü: 30°'den 150°'ye yay (sağdan aşağıya)
+      // Dış ok: sağ tarafta, r=98 dışında
+      var r = 98;
+      var aStart = (-50 - 90) * Math.PI/180;
+      var aEnd   =  ( 50 - 90) * Math.PI/180;
+      var x1 = 100 + r*Math.cos(aStart), y1 = 100 + r*Math.sin(aStart);
+      var x2 = 100 + r*Math.cos(aEnd),   y2 = 100 + r*Math.sin(aEnd);
+      var path = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path.setAttribute('d','M '+x1+' '+y1+' A '+r+' '+r+' 0 0 1 '+x2+' '+y2);
+      path.setAttribute('fill','none'); path.setAttribute('stroke','#ff5533');
+      path.setAttribute('stroke-width','2.5'); path.setAttribute('stroke-linecap','round');
+      // Ok başı
+      var hAngle = aEnd + 0.35;
+      var hx = 100 + r*Math.cos(aEnd), hy = 100 + r*Math.sin(aEnd);
+      var h1x = hx - 7*Math.cos(hAngle-0.4), h1y = hy - 7*Math.sin(hAngle-0.4);
+      var h2x = hx - 7*Math.cos(hAngle+0.4), h2y = hy - 7*Math.sin(hAngle+0.4);
+      var arrowHead = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      arrowHead.setAttribute('points', h1x+','+h1y+' '+hx+','+hy+' '+h2x+','+h2y);
+      arrowHead.setAttribute('fill','none'); arrowHead.setAttribute('stroke','#ff5533');
+      arrowHead.setAttribute('stroke-width','2.5'); arrowHead.setAttribute('stroke-linecap','round');
+      var lbl = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lbl.setAttribute('x','170'); lbl.setAttribute('y','52');
+      lbl.setAttribute('text-anchor','middle'); lbl.setAttribute('fill','#ff5533');
+      lbl.setAttribute('font-size','10'); lbl.setAttribute('font-family','monospace');
+      lbl.setAttribute('font-weight','bold');
+      lbl.textContent = 'CCW ↺';
+      rotG.appendChild(path); rotG.appendChild(arrowHead); rotG.appendChild(lbl);
+    } else {
+      // Saat yönü tersi: 120°'den 60°'ye yay (ters yön)
+      var r = 98;
+      var aStart2 = ( 50 - 90) * Math.PI/180;
+      var aEnd2   = (-50 - 90) * Math.PI/180;
+      var x1b = 100 + r*Math.cos(aStart2), y1b = 100 + r*Math.sin(aStart2);
+      var x2b = 100 + r*Math.cos(aEnd2),   y2b = 100 + r*Math.sin(aEnd2);
+      var path2 = document.createElementNS('http://www.w3.org/2000/svg','path');
+      path2.setAttribute('d','M '+x1b+' '+y1b+' A '+r+' '+r+' 0 0 0 '+x2b+' '+y2b);
+      path2.setAttribute('fill','none'); path2.setAttribute('stroke','#4488ff');
+      path2.setAttribute('stroke-width','2.5'); path2.setAttribute('stroke-linecap','round');
+      var hAngle2 = aEnd2 - 0.35;
+      var hxb = 100 + r*Math.cos(aEnd2), hyb = 100 + r*Math.sin(aEnd2);
+      var h1xb = hxb - 7*Math.cos(hAngle2-0.4), h1yb = hyb - 7*Math.sin(hAngle2-0.4);
+      var h2xb = hxb - 7*Math.cos(hAngle2+0.4), h2yb = hyb - 7*Math.sin(hAngle2+0.4);
+      var arrowHead2 = document.createElementNS('http://www.w3.org/2000/svg','polyline');
+      arrowHead2.setAttribute('points', h1xb+','+h1yb+' '+hxb+','+hyb+' '+h2xb+','+h2yb);
+      arrowHead2.setAttribute('fill','none'); arrowHead2.setAttribute('stroke','#4488ff');
+      arrowHead2.setAttribute('stroke-width','2.5'); arrowHead2.setAttribute('stroke-linecap','round');
+      var lbl2 = document.createElementNS('http://www.w3.org/2000/svg','text');
+      lbl2.setAttribute('x','30'); lbl2.setAttribute('y','52');
+      lbl2.setAttribute('text-anchor','middle'); lbl2.setAttribute('fill','#4488ff');
+      lbl2.setAttribute('font-size','10'); lbl2.setAttribute('font-family','monospace');
+      lbl2.setAttribute('font-weight','bold');
+      lbl2.textContent = 'CW ↻';
+      rotG.appendChild(path2); rotG.appendChild(arrowHead2); rotG.appendChild(lbl2);
+    }
+    svgEl.appendChild(rotG);
   }
 
   // En yakın kanat tablosu
@@ -554,6 +763,15 @@ function renderResult(res) {
   statusDiv.textContent = res.e < 400
     ? '✓ Hesaplama tamamlandı — düzeltme ağırlığını takın ve doğrulama ölçümü alın'
     : '⚠ Yüksek dengesizlik — düzeltme sonrası doğrulama kritik';
+
+  // Kadran alt etiketi guncelle
+  var df = document.getElementById('dialFooter');
+  if (df) {
+    var dirTxt = res.rotation === 'CW'
+      ? '<span style="color:#ff5533;font-weight:700;">↻ CW</span> — duzeltme CCW yonunde'
+      : '<span style="color:#4488ff;font-weight:700;">↺ CCW</span> — duzeltme CW yonunde';
+    df.innerHTML = 'F2 &nbsp;|&nbsp; <span style="color:#555">● Kanat konumları</span> &nbsp;|&nbsp; ' + dirTxt;
+  }
 
   // Rehber
   document.getElementById('guideContent').innerHTML =
@@ -636,6 +854,7 @@ window.downloadPDF = function() {
     '<tr><td>Fan Yarıçapı</td><td>—</td><td>'+res.fanR.toFixed(0)+'</td><td>mm</td></tr>'+
     '<tr style="background:#fafafa"><td>Devir</td><td>—</td><td>'+res.rpm+'</td><td>RPM</td></tr>'+
     (res.bladeCount>0?'<tr><td>Kanat Sayısı</td><td>—</td><td>'+res.bladeCount+'</td><td>adet</td></tr>':'')+
+    '<tr style="background:#fafafa"><td>Fan Dönüş Yönü</td><td>—</td><td><b>'+(res.rotation==='CW'?'Saat Yönü (CW)':'Saat Yönü Tersi (CCW)')+'</b></td><td>—</td></tr>'+
     '</table></div>'+
 
     '<div class="sec"><div class="st">Ara Hesaplama Değerleri</div>'+
